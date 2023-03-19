@@ -85,6 +85,7 @@ const Create = ({ marketplace, nft }) => {
                 type="file"
                 required
                 name="file"
+                placeholder="property document"
                 onChange={uploadToIPFS}
               />
               <Form.Control
@@ -110,7 +111,7 @@ const Create = ({ marketplace, nft }) => {
               />
               <div className="d-grid px-0">
                 <Button onClick={createNFT} variant="primary" size="lg">
-                  Create & List NFT!
+                  List Property!
                 </Button>
               </div>
             </Row>

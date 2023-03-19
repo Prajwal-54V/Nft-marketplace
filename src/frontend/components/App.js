@@ -17,6 +17,7 @@ import "./App.css";
 function App() {
   const [loading, setLoading] = useState(true);
   const [account, setAccount] = useState(null);
+  const [balance, setBalance] = useState(0);
   const [nft, setNFT] = useState({});
   const [marketplace, setMarketplace] = useState({});
   // MetaMask Login/Connect
@@ -25,8 +26,12 @@ function App() {
       method: "eth_requestAccounts",
     });
     setAccount(accounts[0]);
+
     // Get provider from Metamask
     const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const temp = await provider.getBalance(accounts[0]);
+    setBalance(ethers.utils.formatEther(temp));
+
     // Set signer
     const signer = provider.getSigner();
 
@@ -57,7 +62,11 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <>
-          <Navigation web3Handler={web3Handler} account={account} />
+          <Navigation
+            web3Handler={web3Handler}
+            account={account}
+            balance={balance}
+          />
         </>
         <div>
           {loading ? (
