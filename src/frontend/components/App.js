@@ -20,6 +20,10 @@ function App() {
   const [balance, setBalance] = useState(0);
   const [nft, setNFT] = useState({});
   const [marketplace, setMarketplace] = useState({});
+
+  //mongoDB connection
+  // const mongoDB=new MongoClient()
+
   // MetaMask Login/Connect
   const web3Handler = async () => {
     const accounts = await window.ethereum.request({
@@ -68,7 +72,7 @@ function App() {
             balance={balance}
           />
         </>
-        <div>
+        <>
           {loading ? (
             <div
               style={{
@@ -113,7 +117,7 @@ function App() {
               />
             </Routes>
           )}
-        </div>
+        </>
       </div>
     </BrowserRouter>
   );

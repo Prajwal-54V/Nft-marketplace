@@ -64,10 +64,16 @@ export default function MyPurchases({ marketplace, nft, account }) {
             {purchases.map((item, idx) => (
               <Col key={idx} className="overflow-hidden">
                 <Card>
-                  <Card.Img variant="top" src={`https://${item.image}`} />
-                  <Card.Footer>
-                    {ethers.utils.formatEther(item.totalPrice)} ETH
-                  </Card.Footer>
+                  <a
+                    href={`https://${item.image}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <Card.Img variant="top" src={`https://${item.image}`} />
+                    <Card.Footer>
+                      {ethers.utils.formatEther(item.totalPrice)} ETH
+                    </Card.Footer>
+                  </a>
                 </Card>
               </Col>
             ))}

@@ -8,7 +8,7 @@ const Navigation = ({ web3Handler, account, balance }) => {
       <Container>
         <Navbar.Brand href="/">
           <img src={market} width="40" height="40" alt="" />
-          &nbsp;&nbsp;&nbsp; Property Marketplace
+          &nbsp;&nbsp; Property Marketplace
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
@@ -17,7 +17,7 @@ const Navigation = ({ web3Handler, account, balance }) => {
               Home
             </Nav.Link>
             <Nav.Link as={Link} className="ms-3" to="/create">
-              List Property
+              Sell Property
             </Nav.Link>
             <Nav.Link as={Link} className="ms-3" to="/my-listed-items">
               Listed Properties
@@ -29,17 +29,16 @@ const Navigation = ({ web3Handler, account, balance }) => {
           <Nav>
             {account ? (
               <Nav.Link
-                href={`https://etherscan.io/address/${account}`}
+                // href={`https://etherscan.io/address/${account}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="button nav-button btn-sm mx-4"
+                className="button nav-button btn-sm m5-4"
               >
                 <Button variant="outline-light">
                   {account.slice(0, 5) + "..." + account.slice(38, 42)}
-                </Button>
-                <div className="mt-2">
+                  <br />
                   balance : {parseFloat(balance).toFixed(4)}
-                </div>
+                </Button>
               </Nav.Link>
             ) : (
               <Button onClick={web3Handler} variant="outline-light">

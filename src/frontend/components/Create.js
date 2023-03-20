@@ -25,8 +25,8 @@ const client = ipfsHttpClient({
 
 const Create = ({ marketplace, nft }) => {
   const [image, setImage] = useState("");
-  const [price, setPrice] = useState(null);
-  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
   const uploadToIPFS = async (event) => {
     event.preventDefault();
@@ -34,21 +34,32 @@ const Create = ({ marketplace, nft }) => {
     if (typeof file !== "undefined") {
       try {
         const result = await client.add(file);
-        // console.log(result);
-        // setImage(`https://ipfs.infura.io/ipfs/${result.path}`)
         setImage(`${subdomain}/ipfs/${result.path}`);
       } catch (error) {
-        console.log("ipfs image upload error: ", error);
+        console.log("ipfs Document upload error: ", error);
+      }
+    }
+  };
+  // application / pdf;
+  // image/png
+
+  const uploadToDB = async (e) => {
+    e.preventDefault();
+    const file = e.target.files[0];
+    if (typeof file !== "undefined") {
+      try {
+      } catch (error) {
+        console.log("DB image upload error: ", error);
       }
     }
   };
   const createNFT = async () => {
-    if (!image || !price || !name || !description) return;
+    if (!image || !price || !location || !description) return;
     try {
       const result = await client.add(
-        JSON.stringify({ image, price, name, description })
+        JSON.stringify({ image, price, location, description })
       );
-      console.log(result);
+      // console.log(result);
       mintThenList(result);
     } catch (error) {
       console.log("ipfs uri upload error: ", error);
@@ -72,7 +83,7 @@ const Create = ({ marketplace, nft }) => {
     await (await marketplace.makeItem(nft.address, id, listingPrice)).wait();
   };
   return (
-    <div className="container-fluid mt-5">
+    <div className=" mt-5">
       <div className="row">
         <main
           role="main"
@@ -81,19 +92,24 @@ const Create = ({ marketplace, nft }) => {
         >
           <div className="content mx-auto">
             <Row className="g-4">
+              <Form.Group controlId="propertyDocument" className="d-flex">
+                <Form.Label style={{ width: "100px" }}>Document:</Form.Label>
+                <Form.Control
+                  type="file"
+                  className=""
+                  onChange={uploadToIPFS}
+                />
+              </Form.Group>
+              <Form.Group controlId="propertyImage" className="d-flex">
+                <Form.Label style={{ width: "100px" }}>Image:</Form.Label>
+                <Form.Control type="file" onChange={uploadToDB} className="" />
+              </Form.Group>
               <Form.Control
-                type="file"
-                required
-                name="file"
-                placeholder="property document"
-                onChange={uploadToIPFS}
-              />
-              <Form.Control
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => setLocation(e.target.value)}
                 size="lg"
                 required
                 type="text"
-                placeholder="Name"
+                placeholder="location"
               />
               <Form.Control
                 onChange={(e) => setDescription(e.target.value)}
@@ -109,11 +125,10 @@ const Create = ({ marketplace, nft }) => {
                 type="number"
                 placeholder="Price in ETH"
               />
-              <div className="d-grid px-0">
-                <Button onClick={createNFT} variant="primary" size="lg">
-                  List Property!
-                </Button>
-              </div>
+
+              <Button onClick={createNFT} variant="primary" type="submit">
+                List Property
+              </Button>
             </Row>
           </div>
         </main>

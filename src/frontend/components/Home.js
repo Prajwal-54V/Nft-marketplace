@@ -37,23 +37,6 @@ const Home = ({ marketplace, nft }) => {
             // console.log(items);
             setItems(items);
           });
-
-        // console.log(typeof uri);
-        // const response = await fetch(uri, { mode: "no-cors" });
-        // console.log("json data", tt);
-        // const metadata = await response.json();
-
-        // // get total price of item (item price + fee)
-
-        // // Add item to items array
-        // items.push({
-        //   totalPrice,
-        //   itemId: item.itemId,
-        //   seller: item.seller,
-        //   name: metadata.name,
-        //   description: metadata.description,
-        //   image: metadata.image,
-        // });
       }
     }
     setLoading(false);
