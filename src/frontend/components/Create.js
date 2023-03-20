@@ -3,6 +3,8 @@ import { ethers } from "ethers";
 import { Row, Form, Button } from "react-bootstrap";
 import { Buffer } from "buffer";
 import { create as ipfsHttpClient } from "ipfs-http-client";
+import { useAlert } from "react-alert";
+import { useNavigate } from "react-router-dom";
 // const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0')
 
 const projectId = "2N9f5AoKdaMwTOFrSPrrpS7TRxb";
@@ -25,16 +27,24 @@ const client = ipfsHttpClient({
 
 const Create = ({ marketplace, nft }) => {
   const [image, setImage] = useState("");
+  const [document, setDocument] = useState("");
   const [price, setPrice] = useState("");
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
-  const uploadToIPFS = async (event) => {
+  const alert = useAlert();
+  const navigate = useNavigate();
+
+  //
+  const uploadToIPFS = async (event, type) => {
     event.preventDefault();
     const file = event.target.files[0];
     if (typeof file !== "undefined") {
       try {
         const result = await client.add(file);
-        setImage(`${subdomain}/ipfs/${result.path}`);
+
+        if (type === "doc") {
+          setDocument(`${subdomain}/ipfs/${result.path}`);
+        } else if (type === "img") setImage(`${subdomain}/ipfs/${result.path}`);
       } catch (error) {
         console.log("ipfs Document upload error: ", error);
       }
@@ -43,30 +53,19 @@ const Create = ({ marketplace, nft }) => {
   // application / pdf;
   // image/png
 
-  const uploadToDB = async (e) => {
-    e.preventDefault();
-    const file = e.target.files[0];
-    if (typeof file !== "undefined") {
-      try {
-      } catch (error) {
-        console.log("DB image upload error: ", error);
-      }
-    }
-  };
   const createNFT = async () => {
-    if (!image || !price || !location || !description) return;
+    if (!image || !price || !location || !description || !document) return;
     try {
       const result = await client.add(
-        JSON.stringify({ image, price, location, description })
+        JSON.stringify({ image, document, price, location, description })
       );
-      // console.log(result);
+
       mintThenList(result);
     } catch (error) {
       console.log("ipfs uri upload error: ", error);
     }
   };
   const mintThenList = async (result) => {
-    // const uri = `https://ipfs.infura.io/ipfs/${result.path}`;
     const uri = `${subdomain}/ipfs/${result.path}`;
     // mint nft
 
@@ -78,9 +77,11 @@ const Create = ({ marketplace, nft }) => {
     await (await nft.setApprovalForAll(marketplace.address, true)).wait();
     // add nft to marketplace
     const listingPrice = ethers.utils.parseEther(price.toString());
-    console.log("nft address", nft.address);
+    // console.log("nft address", nft.address);
 
     await (await marketplace.makeItem(nft.address, id, listingPrice)).wait();
+    alert.show("property listed successfully!");
+    navigate("/");
   };
   return (
     <div className=" mt-5">
@@ -97,12 +98,16 @@ const Create = ({ marketplace, nft }) => {
                 <Form.Control
                   type="file"
                   className=""
-                  onChange={uploadToIPFS}
+                  onChange={(e) => uploadToIPFS(e, "doc")}
                 />
               </Form.Group>
               <Form.Group controlId="propertyImage" className="d-flex">
                 <Form.Label style={{ width: "100px" }}>Image:</Form.Label>
-                <Form.Control type="file" onChange={uploadToDB} className="" />
+                <Form.Control
+                  type="file"
+                  onChange={(e) => uploadToIPFS(e, "img")}
+                  className=""
+                />
               </Form.Group>
               <Form.Control
                 onChange={(e) => setLocation(e.target.value)}

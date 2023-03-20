@@ -38,6 +38,7 @@ export default function MyPurchases({ marketplace, nft, account }) {
               name: metadata.name,
               description: metadata.description,
               image: metadata.image,
+              document: metadata.document,
             };
           });
 
@@ -65,7 +66,7 @@ export default function MyPurchases({ marketplace, nft, account }) {
               <Col key={idx} className="overflow-hidden">
                 <Card>
                   <a
-                    href={`https://${item.image}`}
+                    href={`https://${item.document}`}
                     target="_blank"
                     rel="noreferrer"
                   >

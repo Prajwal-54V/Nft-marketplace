@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { Row, Col, Card, Button } from "react-bootstrap";
-
+import { useAlert } from "react-alert";
+import { useNavigate } from "react-router-dom";
 const Home = ({ marketplace, nft }) => {
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([]);
+  const alert = useAlert();
+  const naviagate = useNavigate();
   useEffect(() => {
     loadMarketplaceItems();
   }, []);
@@ -47,7 +50,12 @@ const Home = ({ marketplace, nft }) => {
     await (
       await marketplace.purchaseItem(item.itemId, { value: item.totalPrice })
     ).wait();
+
     loadMarketplaceItems();
+    alert.show(
+      "Property purchsed for " + ethers.utils.formatEther(item.totalPrice)
+    );
+    naviagate("/my-purchases");
   };
 
   if (loading)
