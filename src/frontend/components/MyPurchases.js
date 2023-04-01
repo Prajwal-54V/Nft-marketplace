@@ -1,8 +1,14 @@
 import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { Row, Col, Card } from "react-bootstrap";
-
-export default function MyPurchases({ marketplace, nft, account }) {
+import LoginBtn from "./LoginBtn";
+export default function MyPurchases({
+  marketplace,
+  nft,
+  account,
+  loggedIn,
+  setLoginBtn,
+}) {
   const [loading, setLoading] = useState(true);
   const [purchases, setPurchases] = useState([]);
   const loadPurchasedItems = async () => {
@@ -51,6 +57,7 @@ export default function MyPurchases({ marketplace, nft, account }) {
   useEffect(() => {
     loadPurchasedItems();
   }, []);
+  if (!loggedIn) return <LoginBtn setLoginBtn={setLoginBtn} />;
   if (loading)
     return (
       <main style={{ padding: "1rem 0" }}>

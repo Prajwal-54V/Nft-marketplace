@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { Row, Col, Card } from "react-bootstrap";
-
+import LoginBtn from "./LoginBtn";
 function renderSoldItems(items) {
   return (
     <>
@@ -23,7 +23,13 @@ function renderSoldItems(items) {
   );
 }
 
-export default function MyListedItems({ marketplace, nft, account }) {
+export default function MyListedItems({
+  marketplace,
+  nft,
+  account,
+  loggedIn,
+  setLoginBtn,
+}) {
   const [loading, setLoading] = useState(true);
   const [listedItems, setListedItems] = useState([]);
   const [soldItems, setSoldItems] = useState([]);
@@ -67,12 +73,14 @@ export default function MyListedItems({ marketplace, nft, account }) {
   useEffect(() => {
     loadListedItems();
   }, []);
+  if (!loggedIn) return <LoginBtn setLoginBtn={setLoginBtn} />;
   if (loading)
     return (
       <main style={{ padding: "1rem 0" }}>
         <h2>Loading...</h2>
       </main>
     );
+
   return (
     <div className="flex justify-center">
       {listedItems.length > 0 ? (

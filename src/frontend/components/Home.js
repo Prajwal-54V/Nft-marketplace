@@ -3,7 +3,9 @@ import { ethers } from "ethers";
 import { Row, Col, Card, Button } from "react-bootstrap";
 import { useAlert } from "react-alert";
 import { useNavigate } from "react-router-dom";
-const Home = ({ marketplace, nft }) => {
+import LoginBtn from "./LoginBtn";
+
+const Home = ({ marketplace, nft, loggedIn, setLoginBtn }) => {
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([]);
   const alert = useAlert();
@@ -57,6 +59,8 @@ const Home = ({ marketplace, nft }) => {
     );
     naviagate("/my-purchases");
   };
+
+  if (!loggedIn) return <LoginBtn setLoginBtn={setLoginBtn} />;
 
   if (loading)
     return (

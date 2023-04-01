@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Navbar, Nav, Button, Container } from "react-bootstrap";
 import market from "./market.png";
 
-const Navigation = ({ web3Handler, account, balance }) => {
+const Navigation = ({ web3Handler, account, balance, user }) => {
   return (
     <Navbar expand="lg" bg="secondary" variant="dark">
       <Container>
@@ -28,18 +28,21 @@ const Navigation = ({ web3Handler, account, balance }) => {
           </Nav>
           <Nav>
             {account ? (
-              <Nav.Link
-                // href={`https://etherscan.io/address/${account}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="button nav-button btn-sm m5-4"
-              >
-                <Button variant="outline-light">
-                  {account.slice(0, 5) + "..." + account.slice(38, 42)}
-                  <br />
-                  balance : {parseFloat(balance).toFixed(4)}
-                </Button>
-              </Nav.Link>
+              <>
+                <Nav.Link
+                  // href={`https://etherscan.io/address/${account}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="button nav-button btn-sm"
+                >
+                  <h6>{user}</h6>
+                  <Button variant="outline-light">
+                    {account.slice(0, 5) + "..." + account.slice(38, 42)}
+                    <br />
+                    balance : {parseFloat(balance).toFixed(4)}
+                  </Button>
+                </Nav.Link>
+              </>
             ) : (
               <Button onClick={web3Handler} variant="outline-light">
                 Connect Wallet

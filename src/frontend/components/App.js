@@ -6,22 +6,26 @@ import MyListedItems from "./MyListedItems.js";
 import MyPurchases from "./MyPurchases.js";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
+import LoginBtn from "./LoginBtn";
 import MarketplaceAbi from "../contractsData/Marketplace.json";
 import MarketplaceAddress from "../contractsData/Marketplace-address.json";
 import NFTAbi from "../contractsData/NFT.json";
 import NFTAddress from "../contractsData/NFT-address.json";
 import { useState } from "react";
 import { ethers } from "ethers";
-import { Spinner } from "react-bootstrap";
+import { Button, Spinner } from "react-bootstrap";
 
 import "./App.css";
 
 function App() {
+  const [loggedIn, setLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [loginBtn, setLoginBtn] = useState(true);
   const [account, setAccount] = useState(null);
   const [balance, setBalance] = useState(0);
   const [nft, setNFT] = useState({});
   const [marketplace, setMarketplace] = useState({});
+  const [user, setUser] = useState("");
 
   // MetaMask Login/Connect
   const web3Handler = async () => {
@@ -60,7 +64,6 @@ function App() {
     setNFT(nft);
     setLoading(false);
   };
-
   return (
     <BrowserRouter>
       <div className="App">
@@ -69,6 +72,7 @@ function App() {
             web3Handler={web3Handler}
             account={account}
             balance={balance}
+            user={user}
           />
         </>
         <>
@@ -84,15 +88,31 @@ function App() {
               <Spinner animation="border" style={{ display: "flex" }} />
               <p className="mx-3 my-0">Awaiting Metamask Connection...</p>
             </div>
+          ) : loginBtn ? (
+            <LoginBtn setLoginBtn={setLoginBtn} />
           ) : (
             <Routes>
               <Route
                 path="/"
-                element={<Home marketplace={marketplace} nft={nft} />}
+                element={
+                  <Home
+                    marketplace={marketplace}
+                    nft={nft}
+                    loggedIn={loggedIn}
+                    setLoginBtn={setLoginBtn}
+                  />
+                }
               />
               <Route
                 path="/create"
-                element={<Create marketplace={marketplace} nft={nft} />}
+                element={
+                  <Create
+                    marketplace={marketplace}
+                    nft={nft}
+                    loggedIn={loggedIn}
+                    setLoginBtn={setLoginBtn}
+                  />
+                }
               />
               <Route
                 path="/my-listed-items"
@@ -101,6 +121,8 @@ function App() {
                     marketplace={marketplace}
                     nft={nft}
                     account={account}
+                    loggedIn={loggedIn}
+                    setLoginBtn={setLoginBtn}
                   />
                 }
               />
@@ -111,11 +133,27 @@ function App() {
                     marketplace={marketplace}
                     nft={nft}
                     account={account}
+                    loggedIn={loggedIn}
+                    setLoginBtn={setLoginBtn}
                   />
                 }
               />
-              <Route path="/login" element={<LoginForm />} />
-              <Route path="/signup" element={<SignupForm />} />
+              <Route
+                path="/login"
+                element={
+                  <LoginForm setLoggedIn={setLoggedIn} setUser={setUser} />
+                }
+              />
+              <Route
+                path="/signup"
+                element={
+                  <SignupForm
+                    setLoggedIn={setLoggedIn}
+                    account={account}
+                    setUser={setUser}
+                  />
+                }
+              />
             </Routes>
           )}
         </>

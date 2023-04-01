@@ -3,6 +3,7 @@ import { ethers } from "ethers";
 import { Row, Form, Button } from "react-bootstrap";
 import { Buffer } from "buffer";
 import { create as ipfsHttpClient } from "ipfs-http-client";
+import LoginBtn from "./LoginBtn";
 import { useAlert } from "react-alert";
 import { useNavigate } from "react-router-dom";
 // const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0')
@@ -25,7 +26,7 @@ const client = ipfsHttpClient({
   },
 });
 
-const Create = ({ marketplace, nft }) => {
+const Create = ({ marketplace, nft, loggedIn, setLoginBtn }) => {
   const [image, setImage] = useState("");
   const [document, setDocument] = useState("");
   const [price, setPrice] = useState("");
@@ -83,6 +84,7 @@ const Create = ({ marketplace, nft }) => {
     alert.show("property listed successfully!");
     navigate("/");
   };
+  if (!loggedIn) return <LoginBtn setLoginBtn={setLoginBtn} />;
   return (
     <div className=" mt-5">
       <div className="row">
