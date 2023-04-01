@@ -4,6 +4,8 @@ import Home from "./Home.js";
 import Create from "./Create.js";
 import MyListedItems from "./MyListedItems.js";
 import MyPurchases from "./MyPurchases.js";
+import LoginForm from "./LoginForm";
+import SignupForm from "./SignupForm";
 import MarketplaceAbi from "../contractsData/Marketplace.json";
 import MarketplaceAddress from "../contractsData/Marketplace-address.json";
 import NFTAbi from "../contractsData/NFT.json";
@@ -20,9 +22,6 @@ function App() {
   const [balance, setBalance] = useState(0);
   const [nft, setNFT] = useState({});
   const [marketplace, setMarketplace] = useState({});
-
-  //mongoDB connection
-  // const mongoDB=new MongoClient()
 
   // MetaMask Login/Connect
   const web3Handler = async () => {
@@ -115,6 +114,8 @@ function App() {
                   />
                 }
               />
+              <Route path="/login" element={<LoginForm />} />
+              <Route path="/signup" element={<SignupForm />} />
             </Routes>
           )}
         </>
