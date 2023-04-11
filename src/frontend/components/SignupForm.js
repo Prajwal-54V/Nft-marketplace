@@ -22,7 +22,7 @@ function SignupForm({ setLoggedIn, account, setUser }) {
       });
 
       if (response.status === 200) {
-        setUser(response.data.user.name);
+        setUser(response.data.user);
         localStorage.setItem("token", response.data.token);
         navigate("/");
         setLoggedIn(true);

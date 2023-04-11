@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { Row, Col, Card } from "react-bootstrap";
 import LoginBtn from "./LoginBtn";
+import axios from "axios";
+import { useAlert } from "react-alert";
+import { client, subdomain } from "../../constants/IPFS";
+
 function renderSoldItems(items) {
   return (
     <>
@@ -29,14 +33,79 @@ export default function MyListedItems({
   account,
   loggedIn,
   setLoginBtn,
+  user,
 }) {
   const [loading, setLoading] = useState(true);
   const [listedItems, setListedItems] = useState([]);
   const [soldItems, setSoldItems] = useState([]);
-  const loadListedItems = async () => {
+  const alert = useAlert();
+  const createNFT = async (data) => {
+    try {
+      const property = JSON.stringify({
+        image: data.image,
+        document: data.document,
+        price: data.price,
+        location: data.location,
+        description: data.description,
+        user: data.user,
+      });
+
+      const result = await client.add(property);
+      mintThenList(result, data.price);
+    } catch (error) {
+      console.log("ipfs uri upload error: ", error);
+    }
+  };
+  const mintThenList = async (result, price) => {
+    console.log(result, price);
+    const uri = `${subdomain}/ipfs/${result.path}`;
+    // mint nft
+
+    await (await nft.mint(uri)).wait();
+    // get tokenId of new nft
+    const id = await nft.tokenCount();
+
+    // approve marketplace to spend nft
+    await (await nft.setApprovalForAll(marketplace.address, true)).wait();
+    // add nft to marketplace
+    const listingPrice = ethers.utils.parseEther(price.toString());
+    // console.log("nft address", nft.address);
+
+    await (await marketplace.makeItem(nft.address, id, listingPrice)).wait();
+    alert.show("property listed successfully!");
+  };
+
+  const listProperty = async (property) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:4000/properties/${property._id}`,
+        { isListed: true }
+      );
+      if (response.status === 200) {
+        createNFT(response.data);
+      } else {
+        throw new Error("failed to list property");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const loadApprovedProperty = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/properties/${user._id}`
+      );
+      setListedItems(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const loadSoldProperties = async () => {
     // Load all sold items that the user listed
     const itemCount = await marketplace.itemCount();
-    let listedItems = [];
+    // let listedItems = [];
     let soldItems = [];
     for (let indx = 1; indx <= itemCount; indx++) {
       const i = await marketplace.items(indx);
@@ -60,18 +129,19 @@ export default function MyListedItems({
               description: metadata.description,
               image: metadata.image,
             };
-            listedItems.push(item);
+            // listedItems.push(item);
             // Add listed item to sold items array if sold
             if (i.sold) soldItems.push(item);
           });
       }
     }
+    loadApprovedProperty();
     setLoading(false);
-    setListedItems(listedItems);
+    // setListedItems(listedItems);
     setSoldItems(soldItems);
   };
   useEffect(() => {
-    loadListedItems();
+    loadSoldProperties();
   }, []);
   if (!loggedIn) return <LoginBtn setLoginBtn={setLoginBtn} />;
   if (loading)
@@ -85,19 +155,51 @@ export default function MyListedItems({
     <div className="flex justify-center">
       {listedItems.length > 0 ? (
         <div className="px-5 py-3 container">
-          <h2>Listed</h2>
-          <Row xs={1} md={2} lg={4} className="g-4 py-3">
-            {listedItems.map((item, idx) => (
-              <Col key={idx} className="overflow-hidden">
-                <Card>
-                  <Card.Img variant="top" src={`https://${item.image}`} />
-                  <Card.Footer>
-                    {ethers.utils.formatEther(item.totalPrice)} ETH
-                  </Card.Footer>
-                </Card>
-              </Col>
-            ))}
-          </Row>
+          <h2>Listed Property</h2>
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Document</th>
+                <th>Is Approved</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {listedItems.map((property) => (
+                <tr key={property._id}>
+                  <td>
+                    <a
+                      href={`https://${property.document}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {property._id}
+                    </a>
+                  </td>
+                  <td>{property.isApproved ? "Approved" : "Not Approved"}</td>
+                  <td>
+                    {property.isApproved ? (
+                      !property.isListed ? (
+                        <>
+                          <button
+                            className="btn btn-success mr-2"
+                            onClick={() => listProperty(property)}
+                          >
+                            list property
+                          </button>
+                        </>
+                      ) : (
+                        <div>property listed</div>
+                      )
+                    ) : (
+                      <div>waiting for approval</div>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
           {soldItems.length > 0 && renderSoldItems(soldItems)}
         </div>
       ) : (

@@ -25,6 +25,13 @@ const Navigation = ({ web3Handler, account, balance, user }) => {
             <Nav.Link as={Link} className="ms-3" to="/my-purchases">
               Purchases
             </Nav.Link>
+            {user.isAdmin ? (
+              <Nav.Link as={Link} className="ms-3" to="/admin-dashboard">
+                DashBoard
+              </Nav.Link>
+            ) : (
+              ""
+            )}
           </Nav>
           <Nav>
             {account ? (
@@ -35,7 +42,6 @@ const Navigation = ({ web3Handler, account, balance, user }) => {
                   rel="noopener noreferrer"
                   className="button nav-button btn-sm"
                 >
-                  <h6>{user}</h6>
                   <Button variant="outline-light">
                     {account.slice(0, 5) + "..." + account.slice(38, 42)}
                     <br />

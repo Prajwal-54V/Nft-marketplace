@@ -11,6 +11,7 @@ export default function MyPurchases({
 }) {
   const [loading, setLoading] = useState(true);
   const [purchases, setPurchases] = useState([]);
+
   const loadPurchasedItems = async () => {
     // Fetch purchased items from marketplace by quering Offered events with the buyer set as the user
     const filter = marketplace.filters.Bought(

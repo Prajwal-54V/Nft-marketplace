@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Spinner } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 export default function LoginBtn({ setLoginBtn }) {

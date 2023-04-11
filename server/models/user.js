@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  isAdmin: { type: Boolean, required: true },
 });
 
 // create a model based on the schema

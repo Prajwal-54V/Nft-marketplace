@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Form, Button, Row } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "react-alert";
 
@@ -20,7 +20,8 @@ function LoginForm({ setLoggedIn, setUser }) {
         password,
       });
       if (response.status === 200) {
-        setUser(response.data.user.name);
+        setUser(response.data.user);
+
         alert.show("Logged in successfully!");
         navigate("/");
         setLoggedIn(true);

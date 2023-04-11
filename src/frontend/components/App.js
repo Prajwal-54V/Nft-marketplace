@@ -13,9 +13,10 @@ import NFTAbi from "../contractsData/NFT.json";
 import NFTAddress from "../contractsData/NFT-address.json";
 import { useState } from "react";
 import { ethers } from "ethers";
-import { Button, Spinner } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 
 import "./App.css";
+import DashBoard from "./DashBoard";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -25,7 +26,7 @@ function App() {
   const [balance, setBalance] = useState(0);
   const [nft, setNFT] = useState({});
   const [marketplace, setMarketplace] = useState({});
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState({});
 
   // MetaMask Login/Connect
   const web3Handler = async () => {
@@ -111,7 +112,15 @@ function App() {
                     nft={nft}
                     loggedIn={loggedIn}
                     setLoginBtn={setLoginBtn}
+                    account={account}
+                    user={user}
                   />
+                }
+              />
+              <Route
+                path="/admin-dashboard"
+                element={
+                  <DashBoard marketplace={marketplace} nft={nft} user={user} />
                 }
               />
               <Route
@@ -123,6 +132,7 @@ function App() {
                     account={account}
                     loggedIn={loggedIn}
                     setLoginBtn={setLoginBtn}
+                    user={user}
                   />
                 }
               />

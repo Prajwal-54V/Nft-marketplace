@@ -1,32 +1,12 @@
 import { useState } from "react";
-import { ethers } from "ethers";
 import { Row, Form, Button } from "react-bootstrap";
-import { Buffer } from "buffer";
-import { create as ipfsHttpClient } from "ipfs-http-client";
 import LoginBtn from "./LoginBtn";
+import axios from "axios";
 import { useAlert } from "react-alert";
 import { useNavigate } from "react-router-dom";
-// const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0')
+import { client, subdomain } from "../../constants/IPFS";
 
-const projectId = "2N9f5AoKdaMwTOFrSPrrpS7TRxb";
-const projectSecret = "949476f7567516616a806fd4d06c2a88";
-const subdomain = "realestateproject.infura-ipfs.io";
-// Pay attentnion at the space between Basic and the $ in the next line
-// encrypt the authorization
-const authorization = `Basic ${Buffer.from(
-  `${projectId}:${projectSecret}`
-).toString("base64")}`;
-
-const client = ipfsHttpClient({
-  host: "infura-ipfs.io",
-  port: 5001,
-  protocol: "https",
-  headers: {
-    authorization: authorization,
-  },
-});
-
-const Create = ({ marketplace, nft, loggedIn, setLoginBtn }) => {
+const Create = ({ marketplace, nft, loggedIn, setLoginBtn, account, user }) => {
   const [image, setImage] = useState("");
   const [document, setDocument] = useState("");
   const [price, setPrice] = useState("");
@@ -51,39 +31,37 @@ const Create = ({ marketplace, nft, loggedIn, setLoginBtn }) => {
       }
     }
   };
-  // application / pdf;
-  // image/png
 
-  const createNFT = async () => {
+  const requestForPropertyApproval = async () => {
     if (!image || !price || !location || !description || !document) return;
-    try {
-      const result = await client.add(
-        JSON.stringify({ image, document, price, location, description })
-      );
 
-      mintThenList(result);
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/reqForApproveProperty",
+        {
+          image,
+          document,
+          price,
+          location,
+          description,
+          user,
+        }
+      );
+      if (response.status === 200) {
+        alert.show(
+          "property requested for approval, will be listed when approved"
+        );
+        navigate("/my-listed-items");
+      } else {
+        throw new Error("cannot request property approve,  failed");
+      }
     } catch (error) {
-      console.log("ipfs uri upload error: ", error);
+      console.error(error);
+      alert.show("cannot request property approve");
+      navigate("/create");
     }
   };
-  const mintThenList = async (result) => {
-    const uri = `${subdomain}/ipfs/${result.path}`;
-    // mint nft
 
-    await (await nft.mint(uri)).wait();
-    // get tokenId of new nft
-    const id = await nft.tokenCount();
-
-    // approve marketplace to spend nft
-    await (await nft.setApprovalForAll(marketplace.address, true)).wait();
-    // add nft to marketplace
-    const listingPrice = ethers.utils.parseEther(price.toString());
-    // console.log("nft address", nft.address);
-
-    await (await marketplace.makeItem(nft.address, id, listingPrice)).wait();
-    alert.show("property listed successfully!");
-    navigate("/");
-  };
   if (!loggedIn) return <LoginBtn setLoginBtn={setLoginBtn} />;
   return (
     <div className=" mt-5">
@@ -133,7 +111,11 @@ const Create = ({ marketplace, nft, loggedIn, setLoginBtn }) => {
                 placeholder="Price in ETH"
               />
 
-              <Button onClick={createNFT} variant="primary" type="submit">
+              <Button
+                onClick={requestForPropertyApproval}
+                variant="primary"
+                type="submit"
+              >
                 List Property
               </Button>
             </Row>

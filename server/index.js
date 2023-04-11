@@ -9,6 +9,8 @@ const bodyParser = require("body-parser");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("./models/user");
+const Property = require("./models/property");
+
 app.use(bodyParser.json());
 app.use(cors());
 mongoose
@@ -41,7 +43,7 @@ mongoose
         res.status(200).send({ token, user });
       } catch (error) {
         console.error(error);
-        res.status(500).send({ message: "Something went wrong" });
+        res.status(500).send({ message: "error while sign in" });
       }
     });
 
@@ -64,19 +66,85 @@ mongoose
           email,
           password: hashedPassword,
           metasMaskAcc: account,
+          isAdmin: false,
         });
         await user.save();
 
         // generate a JWT token and send it back to the client
-        const token = jwt.sign({ userId: user._id }, "your_secret_key");
+        const token = jwt.sign({ userId: user._id }, "SECRET KEY");
         res.send({ token, user });
       } catch (error) {
         console.error(error);
-        res.status(500).send({ message: "Something went wrong" });
+        res.status(500).send({ message: "error while signup" });
       }
     });
 
-    app.get("/loginAdmin/", (req, res) => {});
+    app.post("/reqForApproveProperty/", async (req, res) => {
+      const { image, document, price, location, description, user } = req.body;
+      try {
+        const property = new Property({
+          image,
+          document,
+          price,
+          location,
+          description,
+          user,
+        });
+        await property.save();
+        res.status(200).send({ property });
+      } catch (err) {
+        console.log(err);
+        res.status(500).send({ message: "error while creating property" });
+      }
+    });
+    app.get("/allProperties/", async (req, res) => {
+      try {
+        const properties = await Property.find({});
+        res.status(200).send(properties);
+      } catch (err) {
+        console.log(err);
+        res.status(500).send({ message: "error while fetching property" });
+      }
+    });
+    app.get("/properties/:userId", async (req, res) => {
+      try {
+        const { userId } = req.params;
+        const properties = await Property.find({ "user._id": userId });
+
+        res.status(200).json(properties);
+      } catch (err) {
+        console.error("Failed to fetch properties:", err);
+        res.status(500).json({ error: "Failed to fetch properties" });
+      }
+    });
+    app.put("/properties/:id", async (req, res) => {
+      try {
+        // Extract the property ID from request parameters
+        const { id } = req.params;
+
+        // Fetch the property from the database
+        const property = await Property.findById(id);
+
+        if (!property) {
+          return res.status(404).json({ error: "Property not found" });
+        }
+
+        // Update the property with the new data
+        if (req.body.isApproved !== undefined)
+          property.isApproved = req.body.isApproved;
+        if (req.body.isListed !== undefined)
+          property.isListed = req.body.isListed;
+
+        // Save the updated property to the database
+        const updatedProperty = await property.save();
+
+        // Return the updated property as the response
+        res.status(200).json(updatedProperty);
+      } catch (err) {
+        console.error("Failed to update property:", err);
+        res.status(500).json({ error: "Failed to update property" });
+      }
+    });
   })
   .catch((err) => {
     console.error("MongoDB Atlas connection error: ", err);
