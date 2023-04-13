@@ -4,7 +4,7 @@ import { Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "react-alert";
 
-function LoginForm({ setLoggedIn, setUser }) {
+function LoginForm({ setLoggedIn, setUser, account }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -18,6 +18,7 @@ function LoginForm({ setLoggedIn, setUser }) {
       const response = await axios.post("http://localhost:4000/login", {
         email,
         password,
+        account,
       });
       if (response.status === 200) {
         setUser(response.data.user);
@@ -30,7 +31,7 @@ function LoginForm({ setLoggedIn, setUser }) {
       }
     } catch (error) {
       console.error(error);
-      alert.show("Invalid email or password");
+      alert.show("Invalid email or password or metamsk account");
       setLoggedIn(false);
       navigate("/login");
     }

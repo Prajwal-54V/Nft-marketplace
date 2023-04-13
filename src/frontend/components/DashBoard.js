@@ -71,7 +71,7 @@ export default function DashBoard({ marketplace, nft, user }) {
         <thead>
           <tr>
             <th>Document</th>
-            <th>Is Approved</th>
+            <th>Status</th>
             <th>Action</th>
           </tr>
         </thead>

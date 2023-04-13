@@ -43,9 +43,9 @@ const Navigation = ({ web3Handler, account, balance, user }) => {
                   className="button nav-button btn-sm"
                 >
                   <Button variant="outline-light">
-                    {account.slice(0, 5) + "..." + account.slice(38, 42)}
+                    {account.slice(0, 5) + "..." + account.slice(30, 42)}
                     <br />
-                    balance : {parseFloat(balance).toFixed(4)}
+                    {/* balance : {parseFloat(balance).toFixed(4)} */}
                   </Button>
                 </Nav.Link>
               </>

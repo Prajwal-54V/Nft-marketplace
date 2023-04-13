@@ -5,7 +5,7 @@ import { useAlert } from "react-alert";
 import { useNavigate } from "react-router-dom";
 import LoginBtn from "./LoginBtn";
 
-const Home = ({ marketplace, nft, loggedIn, setLoginBtn }) => {
+const Home = ({ marketplace, nft, loggedIn, setLoginBtn, account }) => {
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([]);
   const alert = useAlert();
@@ -57,7 +57,7 @@ const Home = ({ marketplace, nft, loggedIn, setLoginBtn }) => {
     alert.show(
       "Property purchsed for " + ethers.utils.formatEther(item.totalPrice)
     );
-    naviagate("/my-purchases");
+    naviagate("/my-listed-items");
   };
 
   if (!loggedIn) return <LoginBtn setLoginBtn={setLoginBtn} />;
@@ -81,17 +81,20 @@ const Home = ({ marketplace, nft, loggedIn, setLoginBtn }) => {
                     <Card.Title>{item.name}</Card.Title>
                     <Card.Text>{item.description}</Card.Text>
                   </Card.Body>
-                  <Card.Footer>
-                    <div className="d-grid">
-                      <Button
-                        onClick={() => buyMarketItem(item)}
-                        variant="primary"
-                        size="lg"
-                      >
-                        Buy for {ethers.utils.formatEther(item.totalPrice)} ETH
-                      </Button>
-                    </div>
-                  </Card.Footer>
+                  {item.seller.toLowerCase() !== account && (
+                    <Card.Footer>
+                      <div className="d-grid">
+                        <Button
+                          onClick={() => buyMarketItem(item)}
+                          variant="primary"
+                          size="lg"
+                        >
+                          Buy for {ethers.utils.formatEther(item.totalPrice)}{" "}
+                          ETH
+                        </Button>
+                      </div>
+                    </Card.Footer>
+                  )}
                 </Card>
               </Col>
             ))}

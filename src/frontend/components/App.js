@@ -3,7 +3,6 @@ import Navigation from "./Navbar";
 import Home from "./Home.js";
 import Create from "./Create.js";
 import MyListedItems from "./MyListedItems.js";
-import MyPurchases from "./MyPurchases.js";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
 import LoginBtn from "./LoginBtn";
@@ -101,6 +100,7 @@ function App() {
                     nft={nft}
                     loggedIn={loggedIn}
                     setLoginBtn={setLoginBtn}
+                    account={account}
                   />
                 }
               />
@@ -136,22 +136,15 @@ function App() {
                   />
                 }
               />
-              <Route
-                path="/my-purchases"
-                element={
-                  <MyPurchases
-                    marketplace={marketplace}
-                    nft={nft}
-                    account={account}
-                    loggedIn={loggedIn}
-                    setLoginBtn={setLoginBtn}
-                  />
-                }
-              />
+
               <Route
                 path="/login"
                 element={
-                  <LoginForm setLoggedIn={setLoggedIn} setUser={setUser} />
+                  <LoginForm
+                    setLoggedIn={setLoggedIn}
+                    setUser={setUser}
+                    account={account}
+                  />
                 }
               />
               <Route

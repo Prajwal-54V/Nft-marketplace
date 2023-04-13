@@ -39,6 +39,8 @@ $ npx hardhat node
 
 ### 4. boot up local node.js server
 
+open another terminal and run below command
+
 ```
 $ cd server
 $ npm run dev

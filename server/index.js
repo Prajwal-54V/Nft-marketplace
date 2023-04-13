@@ -23,13 +23,19 @@ mongoose
 
     //routes
     app.post("/login/", async (req, res) => {
-      const { email, password } = req.body;
+      const { email, password, account } = req.body;
 
       try {
         // check if the user exists
         const user = await User.findOne({ email });
         if (!user) {
           return res.status(401).send({ message: "Invalid email or password" });
+        }
+
+        if (account !== user.metasMaskAcc) {
+          return res
+            .status(400)
+            .send({ message: "metamask account does not match" });
         }
 
         // check if the password is correct
