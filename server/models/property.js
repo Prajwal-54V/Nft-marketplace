@@ -15,8 +15,10 @@ const propertySchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  tokenId: { type: Object, default: null },
   isApproved: { type: Boolean, default: false },
   isListed: { type: Boolean, default: false },
+  isSold: { type: Boolean, default: false },
 });
 
 // create a model based on the schema

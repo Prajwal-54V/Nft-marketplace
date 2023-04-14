@@ -127,9 +127,12 @@ mongoose
       try {
         // Extract the property ID from request parameters
         const { id } = req.params;
-
-        // Fetch the property from the database
-        const property = await Property.findById(id);
+        var property = "";
+        if (req.body.isSold !== undefined) {
+          property = await Property.findOne({ tokenId: req.body.tokenId });
+        } else {
+          property = await Property.findById(id);
+        }
 
         if (!property) {
           return res.status(404).json({ error: "Property not found" });
@@ -138,8 +141,14 @@ mongoose
         // Update the property with the new data
         if (req.body.isApproved !== undefined)
           property.isApproved = req.body.isApproved;
-        if (req.body.isListed !== undefined)
+        if (req.body.isListed !== undefined) {
           property.isListed = req.body.isListed;
+          property.tokenId = req.body.tokenId;
+        }
+        if (req.body.isSold !== undefined) {
+          property.isSold = req.body.isSold;
+          property.user = req.body.user;
+        }
 
         // Save the updated property to the database
         const updatedProperty = await property.save();
