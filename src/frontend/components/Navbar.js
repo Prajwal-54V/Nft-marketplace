@@ -20,10 +20,7 @@ const Navigation = ({ web3Handler, account, balance, user }) => {
               Sell Property
             </Nav.Link>
             <Nav.Link as={Link} className="ms-3" to="/my-listed-items">
-              Listed Properties
-            </Nav.Link>
-            <Nav.Link as={Link} className="ms-3" to="/my-purchases">
-              Purchases
+              My Properties
             </Nav.Link>
             {user.isAdmin ? (
               <Nav.Link as={Link} className="ms-3" to="/admin-dashboard">

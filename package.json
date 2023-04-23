@@ -18,7 +18,7 @@
     "ethereum-waffle": "^3.4.0",
     "ethers": "^5.5.4",
     "express": "^4.18.2",
-    "hardhat": "^2.8.4",
+    "hardhat": "^2.13.1",
     "ipfs-http-client": "^56.0.1",
     "mongodb": "^5.1.0",
     "path-browserify": "^1.0.1",

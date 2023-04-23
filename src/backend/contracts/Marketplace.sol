@@ -41,6 +41,16 @@ contract Marketplace is ReentrancyGuard {
         address indexed seller,
         address indexed buyer
     );
+    event Relisted(
+        uint itemId,
+        address indexed seller,
+        uint newPrice
+    );
+
+    event Test(
+        uint tokenId,
+        uint itemId
+    );
 
     constructor(uint _feePercent) {
         feeAccount = payable(msg.sender);
@@ -102,8 +112,25 @@ contract Marketplace is ReentrancyGuard {
             msg.sender
         );
     }
+
+    function relistItem(IERC721 _nft,uint _itemId,uint _tokenId, uint _newPrice) external  nonReentrant {
+        require(_itemId > 0 && _itemId <= itemCount, "Item doesn't exist");
+        Item storage item = items[_itemId];
+        require(_nft.ownerOf(_tokenId) == msg.sender, "not the token owner");
+        require(item.sold, "Item is not sold");
+        require(_newPrice > 0, "Price must be greater than zero");
+        item.seller = payable( msg.sender) ;
+        item.price = _newPrice; 
+        item.sold = false;
+        _nft.transferFrom(msg.sender, address(this), _tokenId);
+        emit Relisted(_itemId,  msg.sender, _newPrice);
+    }
+
     function getTotalPrice(uint _itemId) view public returns(uint){
         return((items[_itemId].price*(100 + feePercent))/100);
+    }
+    function isItemSold(uint _itemID)view public returns(bool){
+        return(items[_itemID].sold);
     }
     // * receive function
     receive() external payable {}

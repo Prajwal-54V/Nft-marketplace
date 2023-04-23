@@ -1,18 +1,19 @@
 require("@nomiclabs/hardhat-waffle");
-
+//0.8.4
 module.exports = {
   solidity: "0.8.4",
-  // defaultNetwork: "ganache",
-  // networks: {
-  //   ganache: {
-  //     url: "http://127.0.0.1:7545",
-  //     accounts: [
-  //       "69ac375a4515976528565e02311bf31ecdccd50512a3dffb1ee51efcf4cfd33c",
-  //       "c9116b4524820dd34ea9690fba04719f376e31026214fb96f65f109111f8273b",
-  //       "7666bed8cffd6e5173de74446d580f075bbb9222dbe434808ecc359b3472e54e",
-  //     ],
-  //   },
-  // },
+  defaultNetwork: "ganache",
+  networks: {
+    ganache: {
+      url: "http://127.0.0.1:7545",
+      accounts: [
+        "5b74721401e4cc34d0446a0d66cd965cec819a0b589b85be63b54e6acb82843e",
+        "a2319dc7d5a86213caae8952b5acb52b8d8ad7822c01a97456940642c12721f3",
+        "e3692afcfa1f8c01c113b416342923d25c820cd2b0d25d44c3bdeb4d73368513",
+        "c12ac60d12c04abc2666dd32fddd27d1539cbec700cd293055cf746256640aa0",
+      ],
+    },
+  },
   paths: {
     artifacts: "./src/backend/artifacts",
     sources: "./src/backend/contracts",

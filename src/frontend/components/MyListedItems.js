@@ -1,34 +1,49 @@
 import { useState, useEffect } from "react";
 import { ethers } from "ethers";
-import { Row, Col, Card } from "react-bootstrap";
+import { Row, Col, Card, Form } from "react-bootstrap";
 import LoginBtn from "./LoginBtn";
 import axios from "axios";
 import { useAlert } from "react-alert";
 import { client, subdomain } from "../../constants/IPFS";
+import { useNavigate } from "react-router-dom";
 
 function renderSoldItems(items) {
   return (
     <div className="flex justify-center">
-      <h2>Sold</h2>
-      <div className="px-5 container">
-        <Row xs={1} md={2} lg={4} className="g-4 py-3">
-          {items.map((item, idx) => (
-            <Col key={idx} className="overflow-hidden">
-              <Card>
-                <Card.Img variant="top" src={`https://${item.image}`} />
-                <Card.Footer>
-                  For {ethers.utils.formatEther(item.totalPrice)} ETH - Recieved{" "}
-                  {ethers.utils.formatEther(item.price)} ETH
-                </Card.Footer>
-              </Card>
-            </Col>
-          ))}
-        </Row>
-      </div>
+      {items.length > 0 ? (
+        <>
+          <h2>Sold</h2>
+          <div className="px-5 container">
+            <Row xs={1} md={2} lg={4} className="g-4 py-3">
+              {items.map((item, idx) => (
+                <Col key={idx} className="overflow-hidden">
+                  <Card>
+                    <Card.Img variant="top" src={`https://${item.image}`} />
+                    <Card.Footer>
+                      For {ethers.utils.formatEther(item.totalPrice)} ETH -
+                      Recieved {ethers.utils.formatEther(item.price)} ETH
+                    </Card.Footer>
+                  </Card>
+                </Col>
+              ))}
+            </Row>
+          </div>
+        </>
+      ) : (
+        <main style={{ padding: "1rem 0" }}>
+          <h5>No sold properties</h5>
+        </main>
+      )}
     </div>
   );
 }
-function renderPurchases(purchases) {
+function renderPurchases(
+  purchases,
+  resell,
+  toggleResell,
+  setNewPrice,
+  resellProperty
+) {
   return (
     <div className="flex justify-center">
       {purchases.length > 0 ? (
@@ -45,10 +60,61 @@ function renderPurchases(purchases) {
                       rel="noreferrer"
                     >
                       <Card.Img variant="top" src={`https://${item.image}`} />
-                      <Card.Footer>
-                        {ethers.utils.formatEther(item.totalPrice)} ETH
-                      </Card.Footer>
+                      {item.sold ? (
+                        <Card.Subtitle className="my-1">
+                          purchased for{" "}
+                          {ethers.utils.formatEther(item.totalPrice)} ETH
+                        </Card.Subtitle>
+                      ) : (
+                        <Card.Subtitle className="my-1">
+                          listed for {ethers.utils.formatEther(item.totalPrice)}{" "}
+                          ETH
+                        </Card.Subtitle>
+                      )}
                     </a>
+                    {item.sold && (
+                      <Card.Footer className="d-flex flex-column justify-content-evenly">
+                        {resell === idx ? (
+                          <>
+                            <Row className="my-2">
+                              <Form.Control
+                                onChange={(e) => {
+                                  setNewPrice(e.target.value);
+                                }}
+                                required
+                                type="number"
+                                placeholder="Price in ETH"
+                              />
+                            </Row>
+                            <div className="d-flex flex-row">
+                              <button
+                                className="btn btn-success w-50"
+                                onClick={() => {
+                                  resellProperty(item);
+                                }}
+                              >
+                                Resell
+                              </button>
+                              <button
+                                className="btn btn-secondary w-50"
+                                onClick={() => toggleResell(-1)}
+                              >
+                                cancel
+                              </button>
+                            </div>
+                          </>
+                        ) : (
+                          <button
+                            className="btn btn-success"
+                            onClick={() => {
+                              toggleResell(idx);
+                            }}
+                          >
+                            Resell Property
+                          </button>
+                        )}
+                      </Card.Footer>
+                    )}
                   </Card>
                 </Col>
               ))}
@@ -56,7 +122,9 @@ function renderPurchases(purchases) {
           </div>
         </>
       ) : (
-        ""
+        <main style={{ padding: "1rem 0" }}>
+          <h5>No purchased assets</h5>
+        </main>
       )}
     </div>
   );
@@ -74,49 +142,104 @@ export default function MyListedItems({
   const [listedItems, setListedItems] = useState([]);
   const [soldItems, setSoldItems] = useState([]);
   const [purchases, setPurchases] = useState([]);
+  const [newPrice, setNewPrice] = useState(0);
+  const [resell, toggleResell] = useState(-1);
   const alert = useAlert();
+  const navigate = useNavigate();
+  const resellProperty = async (property) => {
+    try {
+      if (property !== undefined || property !== null) {
+        const listingPrice = ethers.utils.parseEther(newPrice.toString());
+        await (await nft.setApprovalForAll(marketplace.address, true)).wait();
+
+        await (
+          await marketplace.relistItem(
+            nft.address,
+            property.itemId,
+            property.tokenId,
+            listingPrice
+          )
+        ).wait();
+
+        alert.show("Property Listed");
+        navigate("/");
+      }
+    } catch (err) {
+      console.log(err);
+      alert.show("failed whiled reselling property");
+    }
+  };
 
   const loadPurchasedItems = async () => {
-    // Fetch purchased items from marketplace by quering Offered events with the buyer set as the user
-    const filter = marketplace.filters.Bought(
-      null,
-      null,
-      null,
-      null,
-      null,
-      account
-    );
-    const results = await marketplace.queryFilter(filter);
-    //Fetch metadata of each nft and add that to listedItem object.
-    const purchases = await Promise.all(
-      results.map(async (i) => {
-        // fetch arguments from each result
-        i = i.args;
-        // get uri url from nft contract
-        const totalPrice = await marketplace.getTotalPrice(i.itemId);
-        const uri = await nft.tokenURI(i.tokenId);
-        var tt = `https://${uri}`;
-        let purchasedItem = "";
-        // use uri to fetch the nft metadata stored on ipfs
-        const response = await fetch(tt)
-          .then((res) => res.json())
-          .then((metadata) => {
-            // define listed item object
-            purchasedItem = {
-              totalPrice,
-              price: i.price,
-              itemId: i.itemId,
-              name: metadata.name,
-              description: metadata.description,
-              image: metadata.image,
-              document: metadata.document,
-            };
-          });
+    try {
+      // Fetch purchased items from marketplace by quering Offered events with the buyer set as the user
+      const filter = marketplace.filters.Bought(
+        null,
+        null,
+        null,
+        null,
+        null,
+        account
+      );
+      const res = await marketplace.queryFilter(filter);
+      const response = await axios.get(
+        `http://localhost:4000/properties/${user._id}`
+      );
+      const userPropertyTokens = [];
+      response.data.forEach((prop) => {
+        userPropertyTokens.push(prop.tokenId);
+      });
+      const results = res.filter((item) => userPropertyTokens.includes(item));
+      console.log("token " + userPropertyTokens);
+      console.log("res " + results);
+      if (response.status === 200) {
+        //filter user properties
 
-        return purchasedItem;
-      })
-    );
-    setPurchases(purchases);
+        //Fetch metadata of each nft and add that to listedItem object.
+        const purchases = await Promise.all(
+          results.map(async (i) => {
+            // fetch arguments from each result
+            i = i.args;
+
+            // get uri url from nft contract
+            const totalPrice = await marketplace.getTotalPrice(i.itemId);
+            const isSold = await marketplace.isItemSold(i.itemId);
+            const uri = await nft.tokenURI(i.tokenId);
+            console.log(i.tokenId);
+            var tt = `https://${uri}`;
+            let purchasedItem = "";
+
+            // use uri to fetch the nft metadata stored on ipfs
+            const response = await fetch(tt)
+              .then((res) => res.json())
+              .then((metadata) => {
+                // define listed item object
+
+                purchasedItem = {
+                  totalPrice,
+                  price: i.price,
+                  itemId: i.itemId,
+                  name: metadata.name,
+                  description: metadata.description,
+                  image: metadata.image,
+                  document: metadata.document,
+                  tokenId: i.tokenId,
+                  sold: isSold,
+                };
+              });
+
+            return purchasedItem;
+          })
+        );
+        setPurchases(purchases);
+        console.log(purchases);
+      } else {
+        throw new Error("failed to fetch properties");
+      }
+    } catch (err) {
+      console.log(err);
+      alert.error("failed load purchased items");
+    }
   };
 
   const createNFT = async (data) => {
@@ -144,6 +267,7 @@ export default function MyListedItems({
       // mint nft
 
       await (await nft.mint(uri)).wait();
+
       // get tokenId of new nft
       const id = await nft.tokenCount();
 
@@ -155,27 +279,22 @@ export default function MyListedItems({
 
       await (await marketplace.makeItem(nft.address, id, listingPrice)).wait();
 
-      return true;
+      return id;
     } catch (err) {
       console.log(err);
-      return false;
     }
   };
 
   const listProperty = async (property) => {
     try {
-      const res = await createNFT(property);
-      console.log(res);
-      if (res === true) {
-        const response = await axios.put(
-          `http://localhost:4000/properties/${property._id}`,
-          { isListed: true }
-        );
-        if (response.status === 200) {
-          alert.show("Property listed");
-        } else {
-          throw new Error("failed to list property");
-        }
+      const id = await createNFT(property);
+
+      const response = await axios.put(
+        `http://localhost:4000/properties/${property._id}`,
+        { isListed: true, tokenId: id }
+      );
+      if (response.status === 200) {
+        alert.show("Property listed");
       } else {
         throw new Error("failed to list property");
       }
@@ -190,8 +309,11 @@ export default function MyListedItems({
         `http://localhost:4000/properties/${user._id}`
       );
       setListedItems(response.data);
+      await loadSoldProperties();
+      setLoading(false);
     } catch (err) {
       console.log(err);
+      alert.info("error while fetching your property details");
     }
   };
 
@@ -213,6 +335,7 @@ export default function MyListedItems({
         const totalPrice = await marketplace.getTotalPrice(i.itemId);
         // define listed item object
         var tt = `https://${uri}`;
+        // console.log(i.sold);
         const response = await fetch(tt)
           .then((res) => res.json())
           .then((metadata) => {
@@ -226,18 +349,18 @@ export default function MyListedItems({
             };
             // listedItems.push(item);
             // Add listed item to sold items array if sold
+
             if (i.sold) soldItems.push(item);
           });
       }
     }
-    await loadApprovedProperty();
+
     await loadPurchasedItems();
-    setLoading(false);
-    // setListedItems(listedItems);
     setSoldItems(soldItems);
   };
   useEffect(() => {
-    loadSoldProperties();
+    // loadSoldProperties();
+    loadApprovedProperty();
   }, []);
   if (!loggedIn) return <LoginBtn setLoginBtn={setLoginBtn} />;
   if (loading)
@@ -251,7 +374,7 @@ export default function MyListedItems({
     <div className="flex justify-center">
       {listedItems.length > 0 ? (
         <div className="px-5 py-3 container">
-          <h2>Listed Property</h2>
+          <h4>Listed Property</h4>
           <table className="table">
             <thead>
               <tr>
@@ -295,15 +418,20 @@ export default function MyListedItems({
               ))}
             </tbody>
           </table>
-
-          {soldItems.length > 0 && renderSoldItems(soldItems)}
-          {purchases.length > 0 && renderPurchases(purchases)}
         </div>
       ) : (
         <main style={{ padding: "1rem 0" }}>
-          <h2>No listed assets</h2>
+          <h5>No listed assets</h5>
         </main>
       )}
+      {renderPurchases(
+        purchases,
+        resell,
+        toggleResell,
+        setNewPrice,
+        resellProperty
+      )}
+      {renderSoldItems(soldItems)}
     </div>
   );
 }

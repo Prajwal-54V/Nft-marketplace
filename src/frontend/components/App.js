@@ -101,6 +101,7 @@ function App() {
                     loggedIn={loggedIn}
                     setLoginBtn={setLoginBtn}
                     account={account}
+                    user={user}
                   />
                 }
               />

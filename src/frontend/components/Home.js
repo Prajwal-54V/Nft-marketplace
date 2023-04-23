@@ -4,8 +4,9 @@ import { Row, Col, Card, Button } from "react-bootstrap";
 import { useAlert } from "react-alert";
 import { useNavigate } from "react-router-dom";
 import LoginBtn from "./LoginBtn";
+import axios from "axios";
 
-const Home = ({ marketplace, nft, loggedIn, setLoginBtn, account }) => {
+const Home = ({ marketplace, nft, loggedIn, setLoginBtn, account, user }) => {
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([]);
   const alert = useAlert();
@@ -38,6 +39,7 @@ const Home = ({ marketplace, nft, loggedIn, setLoginBtn, account }) => {
               name: metadata.name,
               description: metadata.description,
               image: metadata.image,
+              tokenId: item.tokenId,
             });
             // console.log(items);
             setItems(items);
@@ -49,15 +51,27 @@ const Home = ({ marketplace, nft, loggedIn, setLoginBtn, account }) => {
   };
 
   const buyMarketItem = async (item) => {
-    await (
-      await marketplace.purchaseItem(item.itemId, { value: item.totalPrice })
-    ).wait();
+    try {
+      await (
+        await marketplace.purchaseItem(item.itemId, { value: item.totalPrice })
+      ).wait();
+      const response = await axios.put(
+        `http://localhost:4000/properties/${item.tokenId}`,
+        { isSold: true, user: user, tokenId: item.tokenId }
+      );
 
-    loadMarketplaceItems();
-    alert.show(
-      "Property purchsed for " + ethers.utils.formatEther(item.totalPrice)
-    );
-    naviagate("/my-listed-items");
+      loadMarketplaceItems();
+
+      if (response.status === 200) {
+        alert.show(
+          "Property purchsed for " + ethers.utils.formatEther(item.totalPrice)
+        );
+        naviagate("/my-listed-items");
+      }
+    } catch (err) {
+      console.log(err);
+      alert.error("failed to buy property");
+    }
   };
 
   if (!loggedIn) return <LoginBtn setLoginBtn={setLoginBtn} />;
