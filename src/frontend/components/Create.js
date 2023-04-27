@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Row, Form, Button } from "react-bootstrap";
 import LoginBtn from "./LoginBtn";
@@ -5,13 +6,17 @@ import axios from "axios";
 import { useAlert } from "react-alert";
 import { useNavigate } from "react-router-dom";
 import { client, subdomain } from "../../constants/IPFS";
+import  "../components/styles.css";
 
 const Create = ({ marketplace, nft, loggedIn, setLoginBtn, account, user }) => {
   const [image, setImage] = useState("");
   const [document, setDocument] = useState("");
+  const [khataCertificate, setkhata] = useState("");
   const [price, setPrice] = useState("");
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
+  const [taxRecipt,setTaxRecipt]= useState("");
+  
   const alert = useAlert();
   const navigate = useNavigate();
 
@@ -25,6 +30,13 @@ const Create = ({ marketplace, nft, loggedIn, setLoginBtn, account, user }) => {
 
         if (type === "doc") {
           setDocument(`${subdomain}/ipfs/${result.path}`);
+          
+        }
+        else if(type==="tax"){
+          setTaxRecipt(`${subdomain}/ipfs/${result.path}`);
+        } 
+        else if(type==="khata"){
+          setkhata(`${subdomain}/ipfs/${result.path}`);
         } else if (type === "img") setImage(`${subdomain}/ipfs/${result.path}`);
       } catch (error) {
         console.log("ipfs Document upload error: ", error);
@@ -33,7 +45,7 @@ const Create = ({ marketplace, nft, loggedIn, setLoginBtn, account, user }) => {
   };
 
   const requestForPropertyApproval = async () => {
-    if (!image || !price || !location || !description || !document) return;
+    if (!image || !price || !location || !description || !document|| !khataCertificate || !taxRecipt) return;
 
     try {
       const response = await axios.post(
@@ -41,6 +53,8 @@ const Create = ({ marketplace, nft, loggedIn, setLoginBtn, account, user }) => {
         {
           image,
           document,
+          khataCertificate,
+          taxRecipt,
           price,
           location,
           description,
@@ -71,22 +85,41 @@ const Create = ({ marketplace, nft, loggedIn, setLoginBtn, account, user }) => {
           className="col-lg-12 mx-auto"
           style={{ maxWidth: "1000px" }}
         >
-          <div className="content mx-auto">
+          <div className="content mx-auto " >
             <Row className="g-4">
+            <div className="documents">
               <Form.Group controlId="propertyDocument" className="d-flex">
-                <Form.Label style={{ width: "100px" }}>Document:</Form.Label>
+                <Form.Label style={{ width: "150px" }}>Property Document:</Form.Label>
                 <Form.Control
                   type="file"
-                  className=""
+                  className="docs"
                   onChange={(e) => uploadToIPFS(e, "doc")}
                 />
               </Form.Group>
+              <Form.Group controlId="taxRecipt" className="d-flex">
+                <Form.Label style={{ width: "150px" }}>Tax Recipt:</Form.Label>
+                <Form.Control
+                  type="file"
+                  className="docs"
+                  onChange={(e) => uploadToIPFS(e, "tax")}
+                />
+              </Form.Group>
+              <Form.Group controlId="khataCertificate" className="d-flex">
+                <Form.Label style={{ width: "150px" }}>Khata Certificate :</Form.Label>
+                <Form.Control
+                  type="file"
+                  className="docs"
+                  onChange={(e) => uploadToIPFS(e, "khata")}
+                />
+              </Form.Group>
+              
+             
               <Form.Group controlId="propertyImage" className="d-flex">
-                <Form.Label style={{ width: "100px" }}>Image:</Form.Label>
+                <Form.Label style={{ width: "150px" }}>Image:</Form.Label>
                 <Form.Control
                   type="file"
                   onChange={(e) => uploadToIPFS(e, "img")}
-                  className=""
+                  className="docs"
                 />
               </Form.Group>
               <Form.Control
@@ -95,6 +128,7 @@ const Create = ({ marketplace, nft, loggedIn, setLoginBtn, account, user }) => {
                 required
                 type="text"
                 placeholder="location"
+                className="docs"
               />
               <Form.Control
                 onChange={(e) => setDescription(e.target.value)}
@@ -102,6 +136,7 @@ const Create = ({ marketplace, nft, loggedIn, setLoginBtn, account, user }) => {
                 required
                 as="textarea"
                 placeholder="Description"
+                className="docs"
               />
               <Form.Control
                 onChange={(e) => setPrice(e.target.value)}
@@ -109,8 +144,9 @@ const Create = ({ marketplace, nft, loggedIn, setLoginBtn, account, user }) => {
                 required
                 type="number"
                 placeholder="Price in ETH"
+                className="docs"
               />
-
+          </div>
               <Button
                 onClick={requestForPropertyApproval}
                 variant="primary"
