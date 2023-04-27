@@ -159,12 +159,25 @@ export default function MyListedItems({
           )
         ).wait();
 
-        alert.show("Property Listed");
-        navigate("/");
+        const response = await axios.post(
+          "http://localhost:4000/updateProperty",
+          {
+            isSold: false,
+            newPrice,
+            tokenId: property.tokenId,
+          }
+        );
+        if (response.status === 200) {
+          alert.show("Property Listed");
+          navigate("/");
+        } else {
+          throw new Error("failed to update property");
+        }
       }
     } catch (err) {
       console.log(err);
       alert.show("failed whiled reselling property");
+      navigate("/my-listed-items");
     }
   };
 

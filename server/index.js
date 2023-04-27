@@ -178,6 +178,21 @@ mongoose
         res.status(500).json({ error: "Failed to update property" });
       }
     });
+    app.post("/updateProperty/", async (req, res) => {
+      try {
+        const property = await Property.findOne({ tokenId: req.body.tokenId });
+        if (req.body.newPrice !== undefined) {
+          property.price = req.body.newPrice;
+          property.isSold = req.body.isSold;
+        }
+        const updatedProperty = await property.save();
+        res.status(200).send({ updatedProperty });
+      } catch (err) {
+        console.log(err);
+        console.error("Failed to update property:", err);
+        res.status(500).json({ error: "Failed to update property" });
+      }
+    });
   })
   .catch((err) => {
     console.error("MongoDB Atlas connection error: ", err);
