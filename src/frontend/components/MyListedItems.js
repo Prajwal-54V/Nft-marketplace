@@ -31,7 +31,7 @@ function renderSoldItems(items) {
         </>
       ) : (
         <main style={{ padding: "1rem 0" }}>
-          <h5>No sold properties</h5>
+          {/* <h5>No sold properties</h5> */}
         </main>
       )}
     </div>
@@ -122,9 +122,7 @@ function renderPurchases(
           </div>
         </>
       ) : (
-        <main style={{ padding: "1rem 0" }}>
-          <h5>No purchased assets</h5>
-        </main>
+        <main style={{ padding: "1rem 0" }}>{/* <h5></h5> */}</main>
       )}
     </div>
   );
@@ -181,18 +179,28 @@ export default function MyListedItems({
         null,
         account
       );
-      const res = await marketplace.queryFilter(filter);
+      const results = await marketplace.queryFilter(filter);
       const response = await axios.get(
         `http://localhost:4000/properties/${user._id}`
       );
       const userPropertyTokens = [];
-      response.data.forEach((prop) => {
-        userPropertyTokens.push(prop.tokenId);
-      });
-      const results = res.filter((item) => userPropertyTokens.includes(item));
-      console.log("token " + userPropertyTokens);
-      console.log("res " + results);
-      if (response.status === 200) {
+      // response.data.forEach((prop) => {
+      //   userPropertyTokens.push(prop.tokenId);
+      // });
+
+      // const results = res.filter((item) =>
+      //   userPropertyTokens.includes(item.args.tokenId)
+      // );
+      // const results = res.filter((item) => {
+      //   return userPropertyTokens.some((otherItem) => {
+      //     return item._hex === otherItem.hex;
+      //   });
+      // });
+
+      // console.log(userPropertyTokens[0]);
+      // console.log(res[0].args.tokenId);
+
+      if (response.data.length > 0) {
         //filter user properties
 
         //Fetch metadata of each nft and add that to listedItem object.
@@ -205,7 +213,7 @@ export default function MyListedItems({
             const totalPrice = await marketplace.getTotalPrice(i.itemId);
             const isSold = await marketplace.isItemSold(i.itemId);
             const uri = await nft.tokenURI(i.tokenId);
-            console.log(i.tokenId);
+
             var tt = `https://${uri}`;
             let purchasedItem = "";
 
@@ -217,7 +225,7 @@ export default function MyListedItems({
 
                 purchasedItem = {
                   totalPrice,
-                  price: i.price,
+                  // price: i.price,
                   itemId: i.itemId,
                   name: metadata.name,
                   description: metadata.description,
@@ -231,14 +239,23 @@ export default function MyListedItems({
             return purchasedItem;
           })
         );
-        setPurchases(purchases);
-        console.log(purchases);
+
+        const uniquePurchases = purchases.filter((item, index, self) => {
+          return (
+            index ===
+            self.findIndex((otherItem) => {
+              return JSON.stringify(otherItem) === JSON.stringify(item);
+            })
+          );
+        });
+
+        setPurchases(uniquePurchases);
       } else {
         throw new Error("failed to fetch properties");
       }
     } catch (err) {
       console.log(err);
-      alert.error("failed load purchased items");
+      // alert.error("failed load purchased items");
     }
   };
 
@@ -309,6 +326,7 @@ export default function MyListedItems({
         `http://localhost:4000/properties/${user._id}`
       );
       setListedItems(response.data);
+
       await loadSoldProperties();
       setLoading(false);
     } catch (err) {
@@ -421,7 +439,7 @@ export default function MyListedItems({
         </div>
       ) : (
         <main style={{ padding: "1rem 0" }}>
-          <h5>No listed assets</h5>
+          {/* <h5>No listed assets</h5> */}
         </main>
       )}
       {renderPurchases(

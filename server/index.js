@@ -10,6 +10,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("./models/user");
 const Property = require("./models/property");
+const { throws } = require("assert");
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -85,6 +86,23 @@ mongoose
       }
     });
 
+    app.post("/updateUser/:userId", async (req, res) => {
+      const { userId } = req.params;
+      const { newAccount } = req.body;
+      try {
+        const user = await User.findOne({ _id: userId });
+        if (!user) {
+          return res.status(401).send({ message: "user not found" });
+        }
+        user.metasMaskAcc = newAccount;
+        const updatedUser = await user.save();
+
+        res.status(200).send({ updatedUser });
+      } catch (err) {
+        console.error(err);
+        res.status(500).send({ message: "error while getting user data" });
+      }
+    });
     app.post("/reqForApproveProperty/", async (req, res) => {
       const { image, document, price, location, description, user } = req.body;
       try {

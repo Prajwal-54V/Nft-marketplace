@@ -13,9 +13,9 @@ import NFTAddress from "../contractsData/NFT-address.json";
 import { useState } from "react";
 import { ethers } from "ethers";
 import { Spinner } from "react-bootstrap";
-
-import "./App.css";
 import DashBoard from "./DashBoard";
+import Profile from "./Profile";
+import "./App.css";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -67,15 +67,15 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
-        <>
+        <div>
           <Navigation
             web3Handler={web3Handler}
             account={account}
             balance={balance}
             user={user}
           />
-        </>
-        <>
+        </div>
+        <div>
           {loading ? (
             <div
               style={{
@@ -158,9 +158,20 @@ function App() {
                   />
                 }
               />
+              <Route
+                path="/profile"
+                element={
+                  <Profile
+                    account={account}
+                    user={user}
+                    setUser={setUser}
+                    setAccount={setAccount}
+                  />
+                }
+              />
             </Routes>
           )}
-        </>
+        </div>
       </div>
     </BrowserRouter>
   );

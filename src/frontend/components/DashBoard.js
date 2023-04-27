@@ -21,7 +21,7 @@ export default function DashBoard({ marketplace, nft, user }) {
       const response = await axios.put(
         `http://localhost:4000/properties/${propertyId}`,
         { isApproved: true }
-      ); // Update the API endpoint based on your backend
+      );
 
       if (response.status === 200) {
         // Update the local state to reflect the change
