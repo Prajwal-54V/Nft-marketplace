@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function DashBoard({ marketplace, nft, user }) {
   const [properties, setProperties] = useState([]);
@@ -70,6 +71,7 @@ export default function DashBoard({ marketplace, nft, user }) {
       <table className="table">
         <thead>
           <tr>
+            
             <th>Document</th>
             <th>Status</th>
             <th>Action</th>
@@ -78,6 +80,7 @@ export default function DashBoard({ marketplace, nft, user }) {
         <tbody>
           {properties.map((property) => (
             <tr key={property._id}>
+              
               <td>
                 <a
                   href={`https://${property.document}`}
@@ -90,11 +93,12 @@ export default function DashBoard({ marketplace, nft, user }) {
               <td>{property.isApproved ? "Approved" : "Not Approved"}</td>
               <td>
                 <>
-                  <button
+                  <button style={{marginRight:"25px"}}
                     className="btn btn-success mr-2"
+
                     onClick={() => handleApprove(property._id)}
                   >
-                    Approve
+                    Approve 
                   </button>
                   <button
                     className="btn btn-danger"

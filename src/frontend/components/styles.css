@@ -8,3 +8,6 @@
  font-size: small;
  margin-bottom: 10px;
 }
+.card::-webkit-scrollbar {
+    display: none;
+}

@@ -24,11 +24,14 @@ const useStyles = makeStyles({
   card: {
     width: 400,
     boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)",
+    overflow: "scroll"
+
   },
   cardHeader: {
     backgroundColor: "#f2f2f2",
     fontWeight: "bold",
     textTransform: "uppercase",
+    
   },
   cardContent: {
     padding: 20,
