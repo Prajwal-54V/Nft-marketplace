@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
 import { Navbar, Nav, Button, Container } from "react-bootstrap";
-import market from "./market.ico";
+
 import ProfileCard from "./ProfileCard";
 const Navigation = ({ web3Handler, account, balance, user }) => {
   return (
-    <Navbar expand="lg" bg="secondary" variant="dark">
+    <Navbar expand="lg"  variant="dark" style={{backgroundColor:"#de85e9"}}>
       <Container>
         <Navbar.Brand href="/">
-          <img src={market} width="40" height="40" alt="" />
+          {/* <img src={market} width="40" height="40" alt="" /> */}
           &nbsp;&nbsp; Property Marketplace
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -20,17 +20,18 @@ const Navigation = ({ web3Handler, account, balance, user }) => {
               </Nav.Link>
             </Nav>
           ) : (
-            <Nav className="me-auto">
-              <Nav.Link as={Link} className="ms-4" to="/">
-                Home
-              </Nav.Link>
-              <Nav.Link as={Link} className="ms-3" to="/create">
-                Sell Property
-              </Nav.Link>
-              <Nav.Link as={Link} className="ms-3" to="/my-listed-items">
-                My Properties
-              </Nav.Link>
-            </Nav>
+            user === undefined ? '' :     <Nav className="me-auto">
+            <Nav.Link as={Link} className="ms-4" to="/">
+              Home
+            </Nav.Link>
+            <Nav.Link as={Link} className="ms-3" to="/create">
+              Sell Property
+            </Nav.Link>
+            <Nav.Link as={Link} className="ms-3" to="/my-listed-items">
+              My Properties
+            </Nav.Link>
+          </Nav>
+        
           )}
 
           <Nav>

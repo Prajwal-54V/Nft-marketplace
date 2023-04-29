@@ -16,6 +16,7 @@ import { Spinner } from "react-bootstrap";
 import DashBoard from "./DashBoard";
 import Profile from "./Profile";
 import "./App.css";
+import "./styles.css";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -92,6 +93,8 @@ function App() {
             <LoginBtn setLoginBtn={setLoginBtn} />
           ) : (
             <Routes>
+              
+              
               <Route
                 path="/"
                 element={
@@ -169,7 +172,9 @@ function App() {
                   />
                 }
               />
+              
             </Routes>
+            
           )}
         </div>
       </div>

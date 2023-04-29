@@ -104,7 +104,14 @@ mongoose
       }
     });
     app.post("/reqForApproveProperty/", async (req, res) => {
-      const { image, document, price, location, description, user } = req.body;
+      const {  image,
+        document,
+        khataCertificate,
+        taxRecipt,
+        price,
+        location,
+        description,
+        user, } = req.body;
       try {
         const property = new Property({
           image,
@@ -113,6 +120,8 @@ mongoose
           location,
           description,
           user,
+          taxRecipt,
+          khataCertificate
         });
         await property.save();
         res.status(200).send({ property });

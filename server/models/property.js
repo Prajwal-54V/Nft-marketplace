@@ -7,6 +7,10 @@ const propertySchema = new mongoose.Schema({
     required: true,
   },
   document: { type: String, required: true },
+  
+  taxRecipt: { type: String, required: true },
+  khataCertificate: { type: String, required: true },
+
   price: { type: String, required: true },
   location: { type: String, required: true },
   description: { type: String, required: true },
