@@ -15,8 +15,10 @@ import { ethers } from "ethers";
 import { Spinner } from "react-bootstrap";
 import DashBoard from "./DashBoard";
 import Profile from "./Profile";
-import "./App.css";
-import "./styles.css";
+// import "./App.css";
+// import "./styles.css";
+import "./css/style.css";
+import LoaderAnimation from "./LoaderAnimation";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -78,17 +80,21 @@ function App() {
         </div>
         <div>
           {loading ? (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                minHeight: "80vh",
-              }}
-            >
-              <Spinner animation="border" style={{ display: "flex" }} />
-              <p className="mx-3 my-0">Awaiting Metamask Connection...</p>
-            </div>
+            // <div
+            //   style={{
+            //     display: "flex",
+            //     justifyContent: "center",
+            //     alignItems: "center",
+            //     minHeight: "80vh",
+            //     // minHeight: "10vh"
+            //   }}
+            // >
+            //   <Spinner animation="border" style={{ color:"black", display: "flex" }} />
+            //   <p className="mx-3 my-0">Awaiting Metamask Connection...</p>
+            // </div>
+            <>
+            <LoaderAnimation />
+            </>
           ) : loginBtn ? (
             <LoginBtn setLoginBtn={setLoginBtn} />
           ) : (

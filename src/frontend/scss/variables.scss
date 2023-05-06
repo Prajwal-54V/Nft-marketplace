@@ -1,0 +1,60 @@
+//variables
+
+$primary-color: blue;
+$accent-1-color: #ffe0f4;
+$accent-2-color: #e5d3c9;
+// White Color
+$white-color: #f5f5f5;
+// Heading Color
+$heading-color: #000000;
+// Text Color
+$text-color: #000000;
+// Dark Color
+$dark-color: #000000;
+// Default Background
+$bg-default: #A6C9BE;
+// Gray Background
+$bg-gray: #f5f7f9;
+// Border Color
+$border-color: #ebebeb;
+// Hover Color
+$hover-color: #575366;
+
+$footer-color:#161215;
+
+$off-white-color:#e7e2de;
+
+$complimentary-color:#e1cbc3;
+$complimentary-color-2:#caacc4;
+$complimentary-color-3:#874d80;
+$complimentary-dark:#4f1e4b;
+$complimentary-dark-2:#a7759f;
+
+
+
+
+// Poppins Font
+$font-poppins: 'Poppins', sans-serif;
+
+// Ubuntu Font
+$font-ubuntu: 'Ubuntu', sans-serif;
+
+
+
+
+
+
+
+
+//responsiveness
+$breakpoint-xl: 'only screen and (min-width:1200px)';
+
+$breakpoint-lg: 'only screen and (min-width:992px) and (max-width:1199px)';
+
+$breakpoint-md: 'only screen and (min-width:768px) and (max-width:991px)';
+
+$breakpoint-sm: 'only screen and (min-width:576px) and (max-width:767px)';
+
+$breakpoint-xs: 'only screen and (max-width:767px)';
+
+$breakpoint-xs-landscape: 'only screen and (min-width:480px) and (max-width:767px)';
