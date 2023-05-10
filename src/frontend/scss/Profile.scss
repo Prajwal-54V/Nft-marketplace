@@ -1,0 +1,133 @@
+.profile-main-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+
+.profile_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+    height: 60%;
+    width: 30%;
+    gap: 0.75rem;
+    background-color: $off-white-color;
+    border-radius: 20px;
+    // overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 9px 9px $complimentary-color-3;
+    label{
+        margin-top: 0;
+        // display: flex;
+        // background-color: black;
+        align-items: center;
+        justify-items: center;
+        // gap: 0.1rem;
+        
+          font-size: 1.5rem;
+          text-align: center;
+          color: $white-color;
+        //   text-transform: uppercase;
+  
+          background: linear-gradient(
+            to right,
+            rgba(161, 140, 209, 1),
+            rgba(251, 194, 235, 1)
+          ) !important;
+  
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+          -webkit-background-clip: text !important;
+          -webkit-text-fill-color: transparent !important;
+          text-shadow: 2px 2px 0.2px #000000;
+    }
+    .profile_brand{
+        margin-top: 0;
+        // display: flex;
+        // background-color: black;
+        align-items: center;
+        justify-items: center;
+        // gap: 0.1rem;
+        
+          font-size: 1.2rem;
+          text-align: center;
+          color: $dark-color;
+          font-weight: 700;
+        //   text-transform: uppercase;
+  
+        //   background: linear-gradient(
+        //     to right,
+        //     rgba(161, 140, 209, 1),
+        //     rgba(251, 194, 235, 1)
+        //   ) !important;
+  
+        //   -webkit-background-clip: text;
+        //   background-clip: text;
+        //   color: transparent;
+        //   -webkit-background-clip: text !important;
+        //   -webkit-text-fill-color: transparent !important;
+        //   text-shadow: 2px 2px 0.2px #000000;
+        
+        
+    }
+    .profile_account_info{
+        margin-top: 0;
+        // display: flex;
+        // background-color: black;
+        align-items: center;
+        justify-items: center;
+        // gap: 0.1rem;
+        
+          font-size: 1.5rem;
+          text-align: center;
+          color: $white-color;
+        //   text-transform: uppercase;
+  
+          background: linear-gradient(
+            to right,
+            rgba(161, 140, 209, 1),
+            rgba(251, 194, 235, 1)
+          ) !important;
+  
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+          -webkit-background-clip: text !important;
+          -webkit-text-fill-color: transparent !important;
+          text-shadow: 2px 2px 0.2px #000000;
+          span{
+            font-size: 1.2rem;
+          text-align: center;
+          color: $dark-color;
+          }
+    }
+    .profil_admin_true{
+      margin-top: 0;
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      background-color: $green-color;
+  box-shadow: 2px 2px $complimentary-color-2;
+    }
+    .profil_admin_false{
+        width: 17px;
+        height: 17px;
+        border-radius: 50%;
+        background-color: $red-color;
+    box-shadow: 2px 2px $complimentary-color-2;
+
+    }
+    .profile_avatar{
+    width: 90px;
+    height: 90px;
+    margin: "0 auto";
+    margin-bottom: 20;
+    box-shadow: 4px 4px $complimentary-color-2;
+    }
+}

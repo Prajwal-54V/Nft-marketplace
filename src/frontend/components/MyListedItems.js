@@ -6,6 +6,7 @@ import axios from "axios";
 import { useAlert } from "react-alert";
 import { client, subdomain } from "../../constants/IPFS";
 import { useNavigate } from "react-router-dom";
+import LoaderAnimation2 from "./LoaderAnimation2"
 
 function renderSoldItems(items) {
   return (
@@ -397,27 +398,133 @@ export default function MyListedItems({
   if (loading)
     return (
       <main style={{ padding: "1rem 0" }}>
-        <h2>Loading...</h2>
+        <LoaderAnimation2 />
       </main>
     );
 
   return (
-    <div className="flex justify-center">
+    // <div className="flex justify-center">
+    //   {listedItems.length > 0 ? (
+    //     <div className="px-5 py-3 container">
+    //       <h4>Listed Property</h4>
+    //       <table className="table">
+    //         <thead>
+    //           <tr>
+    //             <th>Document</th>
+    //             <th>Status</th>
+    //             <th>Action</th>
+    //           </tr>
+    //         </thead>
+    //         <tbody>
+    //           {listedItems.map((property) => (
+    //             <tr key={property._id}>
+    //               <td>
+    //                 <a
+    //                   href={`https://${property.document}`}
+    //                   target="_blank"
+    //                   rel="noopener noreferrer"
+    //                 >
+    //                   {property._id}
+    //                 </a>
+    //               </td>
+    //               <td>{property.isApproved ? "Approved" : "Not Approved"}</td>
+    //               <td>
+    //                 {property.isApproved ? (
+    //                   !property.isListed ? (
+    //                     <>
+    //                       <button
+    //                         className="btn btn-success mr-2"
+    //                         onClick={() => listProperty(property)}
+    //                       >
+    //                         list property
+    //                       </button>
+    //                     </>
+    //                   ) : (
+    //                     <div>property listed</div>
+    //                   )
+    //                 ) : (
+    //                   <div>waiting for approval</div>
+    //                 )}
+    //               </td>
+    //             </tr>
+    //           ))}
+    //         </tbody>
+    //       </table>
+    //     </div>
+    //   ) : (
+    //     <main style={{ padding: "1rem 0" }}>
+    //       {/* <h5>No listed assets</h5> */}
+    //     </main>
+    //   )}
+    //   {renderPurchases(
+    //     purchases,
+    //     resell,
+    //     toggleResell,
+    //     setNewPrice,
+    //     resellProperty
+    //   )}
+    //   {renderSoldItems(soldItems)}
+    // </div>
+    <div className= "dashboard-main-container">
+      <div className="dashboard-container">
+      <header className="dashboard-brand">
+        <h2 >Listed Property</h2>
+      </header>
+    
       {listedItems.length > 0 ? (
-        <div className="px-5 py-3 container">
-          <h4>Listed Property</h4>
+        
+
           <table className="table">
-            <thead>
-              <tr>
-                <th>Document</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
+          <thead>
+          <tr>
+            <div className="row-head">
+            <div className="row-head-col">Document</div>
+            <div className="row-head-col">Status</div>
+            <div className="row-head-col">Action</div>
+            
+            
+            </div>
+            
+          </tr>
+        </thead>
             <tbody>
+              <div className="table-body">
+
+
               {listedItems.map((property) => (
-                <tr key={property._id}>
-                  <td>
+                <div key={property._id}>
+                  <div className="row">
+
+              
+                    <div className="row-body-col"><a
+                          href={`https://${property.document}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {property._id}
+                        </a></div>
+                    <div className="row-body-col">{property.isApproved ? <span className="greenn">Approved</span>  : <span className="redd">Not Approved</span>}</div>
+                    <div className="row-body-col">
+                    {property.isApproved ? (
+                      !property.isListed ? (
+                        <>
+                          <button className="buttons"
+                            
+                            onClick={() => listProperty(property)}
+                          >
+                            list property
+                          </button>
+                        </>
+                      ) : (
+                        <div>property listed</div>
+                      )
+                    ) : (
+                      <div>waiting for approval</div>
+                    )}
+                    </div>
+
+                      </div>
+                  {/* <td>
                     <a
                       href={`https://${property.document}`}
                       target="_blank"
@@ -444,12 +551,13 @@ export default function MyListedItems({
                     ) : (
                       <div>waiting for approval</div>
                     )}
-                  </td>
-                </tr>
+                  </td> */}
+                </div>
               ))}
+              </div>
             </tbody>
           </table>
-        </div>
+        
       ) : (
         <main style={{ padding: "1rem 0" }}>
           {/* <h5>No listed assets</h5> */}
@@ -463,6 +571,7 @@ export default function MyListedItems({
         resellProperty
       )}
       {renderSoldItems(soldItems)}
+    </div>
     </div>
   );
 }

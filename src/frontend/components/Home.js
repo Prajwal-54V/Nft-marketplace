@@ -5,6 +5,7 @@ import { useAlert } from "react-alert";
 import { useNavigate } from "react-router-dom";
 import LoginBtn from "./LoginBtn";
 import axios from "axios";
+import LoaderAnimation2 from "./LoaderAnimation2";
 
 const Home = ({ marketplace, nft, loggedIn, setLoginBtn, account, user }) => {
   const [loading, setLoading] = useState(true);
@@ -79,46 +80,85 @@ const Home = ({ marketplace, nft, loggedIn, setLoginBtn, account, user }) => {
   if (loading)
     return (
       <main style={{ padding: "1rem 0" }}>
-        <h2>Loading...</h2>
+        <LoaderAnimation2/>
       </main>
     );
   return (
-    <div className="flex justify-center">
-      {items.length > 0 ? (
-        <div className="px-5 container">
-          <Row xs={1} md={2} lg={4} className="g-4 py-5">
-            {items.map((item, idx) => (
-              <Col key={idx} className="overflow-hidden">
-                <Card>
-                  <Card.Img variant="top" src={`https://${item.image}`} />
-                  <Card.Body color="secondary">
-                    <Card.Title>{item.name}</Card.Title>
-                    <Card.Text>{item.description}</Card.Text>
-                  </Card.Body>
-                  {item.seller.toLowerCase() !== account && (
-                    <Card.Footer>
-                      <div className="d-grid">
-                        <Button
+    <div className="card-container">
+      <header className="home-brand">
+        <h2 >Properties</h2>
+      </header>
+      <div className="card-box">
+
+      {items.length > 0 && (
+    //     <div className="px-5 container">
+    //       <Row xs={1} md={2} lg={4} className="g-4 py-5">
+    //         {items.map((item, idx) => (
+    //           <Col key={idx} className="overflow-hidden">
+    //             <Card>
+    //               <Card.Img variant="top" src={`https://${item.image}`} />
+    //               <Card.Body color="secondary">
+    //                 <Card.Title>{item.name}</Card.Title>
+    //                 <Card.Text>{item.description}</Card.Text>
+    //               </Card.Body>
+    //               {item.seller.toLowerCase() !== account && (
+    //                 <Card.Footer>
+    //                   <div className="d-grid">
+    //                     <Button
+    //                       onClick={() => buyMarketItem(item)}
+    //                       variant="primary"
+    //                       size="lg"
+    //                     >
+    //                       Buy for {ethers.utils.formatEther(item.totalPrice)}{" "}
+    //                       ETH
+    //                     </Button>
+    //                   </div>
+    //                 </Card.Footer>
+    //               )}
+    //             </Card>
+    //           </Col>
+    //         ))}
+    //       </Row>
+    //     </div>
+    <>
+     
+    
+    {items.map((item, idx) => (
+      <div className="card" key={idx}>
+        {console.log(item.image)}
+      <img src={`https://${item.image}`} alt="image" className="card__image" />
+      <div className="card__content">
+        <h2 className="card__title">{item.name}</h2>
+        <p className="card__description">{item.description}</p>
+        {item.seller.toLowerCase() !== account && (
+                    <div >
+                      
+                        <button className="card__button"
                           onClick={() => buyMarketItem(item)}
-                          variant="primary"
-                          size="lg"
+                          
                         >
                           Buy for {ethers.utils.formatEther(item.totalPrice)}{" "}
                           ETH
-                        </Button>
-                      </div>
-                    </Card.Footer>
+                        </button>
+                      
+                    </div>
                   )}
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        </div>
-      ) : (
-        <main style={{ padding: "1rem 0" }}>
-          <h2>No listed assets</h2>
-        </main>
-      )}
+        {/* <button className="card__button">Buy</button> */}
+      </div>
+    </div>
+
+    ))}
+    </>
+    
+      )
+      //  : 
+      // (
+      //   <main style={{ padding: "1rem 0" }}>
+      //     <h2>No listed assets</h2>
+      //   </main>
+      // )
+      }
+      </div>
     </div>
   );
 };

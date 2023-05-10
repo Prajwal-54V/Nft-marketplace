@@ -25,7 +25,9 @@ function LoginForm({ setLoggedIn, setUser, account }) {
         setUser(response.data.user);
 
         alert.show("Logged in successfully!");
-        navigate("/");
+        if (response.data.user.isAdmin) {
+          navigate("/admin-dashboard");
+        } else navigate("/");
         setLoggedIn(true);
       } else {
         throw new Error("login  failed");

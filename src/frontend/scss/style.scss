@@ -6,9 +6,15 @@
 @import 'videoRecorder';
 @import 'ChatPage';
 @import 'loaderAnimation';
+@import 'Profile';
+@import 'dashboard';
+@import 'card';
 
 @import url('https://fonts.googleapis.com/css?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
+body::-webkit-scrollbar {
+  display: none;
+}
 body {
     margin: 0;
     padding: 0;
@@ -19,9 +25,14 @@ body {
     @media #{$breakpoint-xs} {
         // margin-top: 80px;
     }
+  //   overflow-y: hidden; /* Hide vertical scrollbar */
+  // overflow-x: hidden; /* Hide horizontal scrollbar */
 
     
     background: $white-color;
+    input[type="file"] {
+      display: none;
+  }
   
     /* Chrome 10-25, Safari 5.1-6 */
     // background: -webkit-linear-gradient(to right, rgba(168,237,234,0.5), rgba(254,214,227,0.5));
@@ -29,6 +40,37 @@ body {
     // /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     // background: linear-gradient(to right, rgba(168,237,234,0.5), rgba(254,214,227,0.5))
 }
+.home-brand{
+  margin-top: 0;
+            // display: flex;
+            // background-color: black;
+            align-items: center;
+            justify-items: center;
+            // gap: 0.1rem;
+            h2 {
+              margin: 0;
+              margin-bottom: 1rem;
+              font-size: 2rem;
+              text-align: center;
+              color: $white-color;
+              text-transform: uppercase;
+      
+              background: linear-gradient(
+                to right,
+                rgba(161, 140, 209, 1),
+                rgba(251, 194, 235, 1)
+              ) !important;
+      
+              -webkit-background-clip: text;
+              background-clip: text;
+              color: transparent;
+              -webkit-background-clip: text !important;
+              -webkit-text-fill-color: transparent !important;
+              text-shadow: 2px 2px 0.2px #000000;
+            
+        }
+}
+
 .buttons {
   font-family: $font-poppins;
   // size: 100%;

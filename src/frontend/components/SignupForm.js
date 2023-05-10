@@ -15,6 +15,10 @@ function SignupForm({ setLoggedIn, account, setUser }) {
   const handleSingUp = async (event) => {
     event.preventDefault();
     try {
+      console.log(username,
+        email,
+        password,
+        account,)
       const response = await axios.post("http://localhost:4000/signup", {
         username,
         email,
@@ -113,7 +117,7 @@ function SignupForm({ setLoggedIn, account, setUser }) {
       type="text"
       placeholder="Username"
       name="username"
-      value={email}
+      value={username}
       min="3"
       onChange={(event) => setUsername(event.target.value)}
     />
