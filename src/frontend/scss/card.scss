@@ -73,3 +73,72 @@
     background-color: $dark-color;
   }
   
+
+  .card__sold__description{
+    font-size: 1rem;
+    text-align: center;
+    color: $white-color;
+    // text-transform: uppercase;
+
+    background: linear-gradient(
+      to right,
+      rgba(161, 140, 209, 1),
+      rgba(251, 194, 235, 1)
+    ) !important;
+
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    text-shadow: 2px 2px 0.2px #000000;
+    margin-bottom:0.7rem;
+  }
+
+
+
+
+  .card__footer__button {
+    background-color: $complimentary-color-2;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    margin-right:1rem;
+    margin-left:1rem;
+  }
+  
+  .card__footer__button:hover {
+    background-color: $dark-color;
+  }
+  .card__footer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 0.7rem;
+    transition: 0.3s ease-in-out;
+    input {
+      background: white;
+      padding: .5rem;
+      border: none;
+      border: 0.1rem solid black;
+      border-radius: 0.4rem;
+      width: 100%;
+      color: black;
+      font-size: medium;
+      font-weight: 700;
+      transition: 0.3s ease-in-out;
+      &:focus {
+        border: 0.2rem solid plum;
+        outline: none;
+        color: black;
+        background-color: whitesmoke;
+        box-shadow: none;
+      }
+    }
+  }
+  

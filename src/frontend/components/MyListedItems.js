@@ -10,31 +10,70 @@ import LoaderAnimation2 from "./LoaderAnimation2"
 
 function renderSoldItems(items) {
   return (
-    <div className="flex justify-center">
+    // <div className="flex justify-center">
+    //   {items.length > 0 ? (
+    //     <>
+    //       <h2>Sold</h2>
+    //       <div className="px-5 container">
+    //         <Row xs={1} md={2} lg={4} className="g-4 py-3">
+    //           {items.map((item, idx) => (
+    //             <Col key={idx} className="overflow-hidden">
+    //               <Card>
+    //                 <Card.Img variant="top" src={`https://${item.image}`} />
+    //                 <Card.Footer>
+    //                   For {ethers.utils.formatEther(item.totalPrice)} ETH -
+    //                   Recieved {ethers.utils.formatEther(item.price)} ETH
+    //                 </Card.Footer>
+    //               </Card>
+    //             </Col>
+    //           ))}
+    //         </Row>
+    //       </div>
+    //     </>
+    //   ) : (
+    //     <main style={{ padding: "1rem 0" }}>
+    //       {/* <h5>No sold properties</h5> */}
+    //     </main>
+    //   )}
+    // </div>
+    <div className="card-container">
+      <header className="home-brand">
+        <h2 >Sold Properties</h2>
+      </header>
+      <div className="card-box">
+
       {items.length > 0 ? (
-        <>
-          <h2>Sold</h2>
-          <div className="px-5 container">
-            <Row xs={1} md={2} lg={4} className="g-4 py-3">
-              {items.map((item, idx) => (
-                <Col key={idx} className="overflow-hidden">
-                  <Card>
-                    <Card.Img variant="top" src={`https://${item.image}`} />
-                    <Card.Footer>
-                      For {ethers.utils.formatEther(item.totalPrice)} ETH -
-                      Recieved {ethers.utils.formatEther(item.price)} ETH
-                    </Card.Footer>
-                  </Card>
-                </Col>
-              ))}
-            </Row>
-          </div>
-        </>
-      ) : (
-        <main style={{ padding: "1rem 0" }}>
-          {/* <h5>No sold properties</h5> */}
-        </main>
-      )}
+    
+    <>
+     
+    
+    {items.map((item, idx) => (
+      <div className="card" key={idx}>
+        {console.log(item.image)}
+      <img src={`https://${item.image}`} alt="image" className="card__image" />
+      <div className="card__content">
+        <h2 className="card__title">{item.name}</h2>
+        <p className="card__description">{item.description}</p>
+        <div className="card__footer">
+          <span className="card__sold__description">
+            
+            For {ethers.utils.formatEther(item.totalPrice)} ETH -
+          Recieved {ethers.utils.formatEther(item.price)} ETH
+            </span> 
+        </div>
+        
+      </div>
+    </div>
+
+    ))}
+    </>
+    
+      ): (
+            <main style={{ padding: "1rem 0" }}>
+              {/* <h5>No sold properties</h5> */}
+            </main>
+          )}
+      </div>
     </div>
   );
 }
@@ -46,39 +85,124 @@ function renderPurchases(
   resellProperty
 ) {
   return (
-    <div className="flex justify-center">
-      {purchases.length > 0 ? (
-        <>
-          <h2>purchased</h2>
-          <div className="px-5 container">
-            <Row xs={1} md={2} lg={4} className="g-4 py-5">
-              {purchases.map((item, idx) => (
-                <Col key={idx} className="overflow-hidden">
-                  <Card>
-                    <a
-                      href={`https://${item.document}`}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <Card.Img variant="top" src={`https://${item.image}`} />
-                      {item.sold ? (
-                        <Card.Subtitle className="my-1">
-                          purchased for{" "}
+    // <div className="flex justify-center">
+    //   {purchases.length > 0 ? (
+    //     <>
+    //       <h2>purchased</h2>
+    //       <div className="px-5 container">
+    //         <Row xs={1} md={2} lg={4} className="g-4 py-5">
+    //           {purchases.map((item, idx) => (
+    //             <Col key={idx} className="overflow-hidden">
+    //               <Card>
+    //                 <a
+    //                   href={`https://${item.document}`}
+    //                   target="_blank"
+    //                   rel="noreferrer"
+    //                 >
+    //                   <Card.Img variant="top" src={`https://${item.image}`} />
+    //                   {item.sold ? (
+    //                     <Card.Subtitle className="my-1">
+    //                       purchased for{" "}
+    //                       {ethers.utils.formatEther(item.totalPrice)} ETH
+    //                     </Card.Subtitle>
+    //                   ) : (
+    //                     <Card.Subtitle className="my-1">
+    //                       listed for {ethers.utils.formatEther(item.totalPrice)}{" "}
+    //                       ETH
+    //                     </Card.Subtitle>
+    //                   )}
+    //                 </a>
+    //                 {item.sold && (
+    //                   <Card.Footer className="d-flex flex-column justify-content-evenly">
+    //                     {resell === idx ? (
+    //                       <>
+    //                         <Row className="my-2">
+    //                           <Form.Control
+    //                             onChange={(e) => {
+    //                               setNewPrice(e.target.value);
+    //                             }}
+    //                             required
+    //                             type="number"
+    //                             placeholder="Price in ETH"
+    //                           />
+    //                         </Row>
+    //                         <div className="d-flex flex-row">
+    //                           <button
+    //                             className="btn btn-success w-50"
+    //                             onClick={() => {
+    //                               resellProperty(item);
+    //                             }}
+    //                           >
+    //                             Resell
+    //                           </button>
+    //                           <button
+    //                             className="btn btn-secondary w-50"
+    //                             onClick={() => toggleResell(-1)}
+    //                           >
+    //                             cancel
+    //                           </button>
+    //                         </div>
+    //                       </>
+    //                     ) : (
+    //                       <button
+    //                         className="btn btn-success"
+    //                         onClick={() => {
+    //                           toggleResell(idx);
+    //                         }}
+    //                       >
+    //                         Resell Property
+    //                       </button>
+    //                     )}
+    //                   </Card.Footer>
+    //                 )}
+    //               </Card>
+    //             </Col>
+    //           ))}
+    //         </Row>
+    //       </div>
+    //     </>
+    //   ) : (
+    //     <main style={{ padding: "1rem 0" }}>{/* <h5></h5> */}</main>
+    //   )}
+    // </div>
+    <div className="card-container">
+      <header className="home-brand">
+        <h2 >Purchased Properties</h2>
+      </header>
+      <div className="card-box">
+
+      {purchases.length > 0 && (
+    
+    <>
+     
+    
+    {purchases.map((item, idx) => (
+      <div className="card" key={idx}>
+        {console.log(item.image)}
+      <img src={`https://${item.image}`} alt="image" className="card__image" />
+      <div className="card__content">
+        <h2 className="card__title">{item.name}</h2>
+        <p className="card__description">{item.description}</p>
+        {item.sold ? (
+                        <div className="card__sold__description">
+                          Purchased For{" "}
                           {ethers.utils.formatEther(item.totalPrice)} ETH
-                        </Card.Subtitle>
+                        </div>
                       ) : (
-                        <Card.Subtitle className="my-1">
-                          listed for {ethers.utils.formatEther(item.totalPrice)}{" "}
+                        <div className="card__sold__description">
+                          Listed For {ethers.utils.formatEther(item.totalPrice)}{" "}
                           ETH
-                        </Card.Subtitle>
+                        </div>
                       )}
-                    </a>
-                    {item.sold && (
-                      <Card.Footer className="d-flex flex-column justify-content-evenly">
-                        {resell === idx ? (
+        {item.sold && (
+                    <div >
+                      <div className="card__footer">
+
+                      {resell === idx ? (
                           <>
-                            <Row className="my-2">
-                              <Form.Control
+                            <div className="card__footer_row">
+                              <input
+
                                 onChange={(e) => {
                                   setNewPrice(e.target.value);
                                 }}
@@ -86,10 +210,10 @@ function renderPurchases(
                                 type="number"
                                 placeholder="Price in ETH"
                               />
-                            </Row>
-                            <div className="d-flex flex-row">
+                            </div>
+                            <div className="card__footer_row">
                               <button
-                                className="btn btn-success w-50"
+                                 className="card__footer__button"
                                 onClick={() => {
                                   resellProperty(item);
                                 }}
@@ -97,16 +221,16 @@ function renderPurchases(
                                 Resell
                               </button>
                               <button
-                                className="btn btn-secondary w-50"
+                                 className="card__footer__button"
                                 onClick={() => toggleResell(-1)}
                               >
-                                cancel
+                                Cancel
                               </button>
                             </div>
                           </>
                         ) : (
                           <button
-                            className="btn btn-success"
+                            className="card__button"
                             onClick={() => {
                               toggleResell(idx);
                             }}
@@ -114,17 +238,27 @@ function renderPurchases(
                             Resell Property
                           </button>
                         )}
-                      </Card.Footer>
-                    )}
-                  </Card>
-                </Col>
-              ))}
-            </Row>
-          </div>
-        </>
-      ) : (
-        <main style={{ padding: "1rem 0" }}>{/* <h5></h5> */}</main>
-      )}
+                        </div>
+                      
+                    </div>
+                  )}
+                  
+        {/* <button className="card__button">Buy</button> */}
+      </div>
+    </div>
+
+    ))}
+    </>
+    
+      )
+      //  : 
+      // (
+      //   <main style={{ padding: "1rem 0" }}>
+      //     <h2>No listed assets</h2>
+      //   </main>
+      // )
+      }
+      </div>
     </div>
   );
 }
@@ -563,6 +697,7 @@ export default function MyListedItems({
           {/* <h5>No listed assets</h5> */}
         </main>
       )}
+    </div>
       {renderPurchases(
         purchases,
         resell,
@@ -571,7 +706,6 @@ export default function MyListedItems({
         resellProperty
       )}
       {renderSoldItems(soldItems)}
-    </div>
     </div>
   );
 }
