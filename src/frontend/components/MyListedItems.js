@@ -398,6 +398,7 @@ export default function MyListedItems({
         });
 
         setPurchases(uniquePurchases);
+        // console.log(uniquePurchases);
       } else {
         throw new Error("failed to fetch properties");
       }
@@ -473,6 +474,7 @@ export default function MyListedItems({
       const response = await axios.get(
         `http://localhost:4000/properties/${user._id}`
       );
+
       setListedItems(response.data);
 
       await loadSoldProperties();
