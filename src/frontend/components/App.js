@@ -80,27 +80,13 @@ function App() {
         </div>
         <div>
           {loading ? (
-            // <div
-            //   style={{
-            //     display: "flex",
-            //     justifyContent: "center",
-            //     alignItems: "center",
-            //     minHeight: "80vh",
-            //     // minHeight: "10vh"
-            //   }}
-            // >
-            //   <Spinner animation="border" style={{ color:"black", display: "flex" }} />
-            //   <p className="mx-3 my-0">Awaiting Metamask Connection...</p>
-            // </div>
             <>
-            <LoaderAnimation />
+              <LoaderAnimation />
             </>
           ) : loginBtn ? (
             <LoginBtn setLoginBtn={setLoginBtn} />
           ) : (
             <Routes>
-              
-              
               <Route
                 path="/"
                 element={
@@ -178,9 +164,7 @@ function App() {
                   />
                 }
               />
-              
             </Routes>
-            
           )}
         </div>
       </div>

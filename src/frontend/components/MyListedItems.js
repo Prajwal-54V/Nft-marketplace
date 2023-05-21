@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import { ethers } from "ethers";
-import { Row, Col, Card, Form } from "react-bootstrap";
 import LoginBtn from "./LoginBtn";
 import axios from "axios";
 import { useAlert } from "react-alert";
 import { client, subdomain } from "../../constants/IPFS";
 import { useNavigate } from "react-router-dom";
-import LoaderAnimation2 from "./LoaderAnimation2"
+import LoaderAnimation2 from "./LoaderAnimation2";
 
 function renderSoldItems(items) {
   return (
@@ -36,45 +35,36 @@ function renderSoldItems(items) {
     //     </main>
     //   )}
     // </div>
-    <div className="card-container">
-      <header className="home-brand">
-        <h2 >Sold Properties</h2>
-      </header>
-      <div className="card-box">
-
-      {items.length > 0 ? (
-    
     <>
-     
-    
-    {items.map((item, idx) => (
-      <div className="card" key={idx}>
-        {console.log(item.image)}
-      <img src={`https://${item.image}`} alt="image" className="card__image" />
-      <div className="card__content">
-        <h2 className="card__title">{item.name}</h2>
-        <p className="card__description">{item.description}</p>
-        <div className="card__footer">
-          <span className="card__sold__description">
-            
-            For {ethers.utils.formatEther(item.totalPrice)} ETH -
-          Recieved {ethers.utils.formatEther(item.price)} ETH
-            </span> 
+      {items.length > 0 && (
+        <div className="card-container">
+          <header className="home-brand">
+            <h2>Sold Properties</h2>
+          </header>
+          <div className="card-box">
+            {items.map((item, idx) => (
+              <div className="card" key={idx}>
+                <img
+                  src={`https://${item.image}`}
+                  alt="property"
+                  className="card__image"
+                />
+                <div className="card__content">
+                  <h2 className="card__title">{item.name}</h2>
+                  <p className="card__description">{item.description}</p>
+                  <div className="card__footer">
+                    <span className="card__sold__description">
+                      For {ethers.utils.formatEther(item.totalPrice)} ETH -
+                      Recieved {ethers.utils.formatEther(item.price)} ETH
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-        
-      </div>
-    </div>
-
-    ))}
+      )}
     </>
-    
-      ): (
-            <main style={{ padding: "1rem 0" }}>
-              {/* <h5>No sold properties</h5> */}
-            </main>
-          )}
-      </div>
-    </div>
   );
 }
 function renderPurchases(
@@ -165,44 +155,46 @@ function renderPurchases(
     //     <main style={{ padding: "1rem 0" }}>{/* <h5></h5> */}</main>
     //   )}
     // </div>
-    <div className="card-container">
-      <header className="home-brand">
-        <h2 >Purchased Properties</h2>
-      </header>
-      <div className="card-box">
-
-      {purchases.length > 0 && (
-    
     <>
-     
-    
-    {purchases.map((item, idx) => (
-      <div className="card" key={idx}>
-        {console.log(item.image)}
-      <img src={`https://${item.image}`} alt="image" className="card__image" />
-      <div className="card__content">
-        <h2 className="card__title">{item.name}</h2>
-        <p className="card__description">{item.description}</p>
-        {item.sold ? (
-                        <div className="card__sold__description">
-                          Purchased For{" "}
-                          {ethers.utils.formatEther(item.totalPrice)} ETH
-                        </div>
-                      ) : (
-                        <div className="card__sold__description">
-                          Listed For {ethers.utils.formatEther(item.totalPrice)}{" "}
-                          ETH
-                        </div>
-                      )}
-        {item.sold && (
-                    <div >
+      {purchases.length > 0 && (
+        <div className="card-container">
+          <header className="home-brand">
+            <h2>Purchased Properties</h2>
+          </header>
+          <div className="card-box">
+            {purchases.map((item, idx) => (
+              <div className="card" key={idx}>
+                <a
+                  href={`https://${item.document}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <img
+                    src={`https://${item.image}`}
+                    alt="property"
+                    className="card__image"
+                  />
+                </a>
+                <div className="card__content">
+                  <h2 className="card__title">{item.name}</h2>
+                  <p className="card__description">{item.description}</p>
+                  {item.sold ? (
+                    <div className="card__sold__description">
+                      Purchased For {ethers.utils.formatEther(item.totalPrice)}{" "}
+                      ETH
+                    </div>
+                  ) : (
+                    <div className="card__sold__description">
+                      Listed For {ethers.utils.formatEther(item.totalPrice)} ETH
+                    </div>
+                  )}
+                  {item.sold && (
+                    <div>
                       <div className="card__footer">
-
-                      {resell === idx ? (
+                        {resell === idx ? (
                           <>
                             <div className="card__footer_row">
                               <input
-
                                 onChange={(e) => {
                                   setNewPrice(e.target.value);
                                 }}
@@ -213,7 +205,7 @@ function renderPurchases(
                             </div>
                             <div className="card__footer_row">
                               <button
-                                 className="card__footer__button"
+                                className="card__footer__button"
                                 onClick={() => {
                                   resellProperty(item);
                                 }}
@@ -221,7 +213,7 @@ function renderPurchases(
                                 Resell
                               </button>
                               <button
-                                 className="card__footer__button"
+                                className="card__footer__button"
                                 onClick={() => toggleResell(-1)}
                               >
                                 Cancel
@@ -238,28 +230,18 @@ function renderPurchases(
                             Resell Property
                           </button>
                         )}
-                        </div>
-                      
+                      </div>
                     </div>
                   )}
-                  
-        {/* <button className="card__button">Buy</button> */}
-      </div>
-    </div>
 
-    ))}
+                  {/* <button className="card__button">Buy</button> */}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </>
-    
-      )
-      //  : 
-      // (
-      //   <main style={{ padding: "1rem 0" }}>
-      //     <h2>No listed assets</h2>
-      //   </main>
-      // )
-      }
-      </div>
-    </div>
   );
 }
 
@@ -328,35 +310,26 @@ export default function MyListedItems({
         account
       );
       const results = await marketplace.queryFilter(filter);
-      const response = await axios.get(
+      const userProperties = await axios.get(
         `http://localhost:4000/properties/${user._id}`
       );
+
       const userPropertyTokens = [];
-      // response.data.forEach((prop) => {
-      //   userPropertyTokens.push(prop.tokenId);
-      // });
+      userProperties.data.forEach((prop) => {
+        if (prop.tokenId !== null) userPropertyTokens.push(prop.tokenId);
+      });
 
-      // const results = res.filter((item) =>
-      //   userPropertyTokens.includes(item.args.tokenId)
-      // );
-      // const results = res.filter((item) => {
-      //   return userPropertyTokens.some((otherItem) => {
-      //     return item._hex === otherItem.hex;
-      //   });
-      // });
-
-      // console.log(userPropertyTokens[0]);
-      // console.log(res[0].args.tokenId);
-
-      if (response.data.length > 0) {
-        //filter user properties
-
+      if (userProperties.data.length > 0) {
         //Fetch metadata of each nft and add that to listedItem object.
         const purchases = await Promise.all(
           results.map(async (i) => {
-            // fetch arguments from each result
             i = i.args;
 
+            const exists = userPropertyTokens.some(
+              (element) => element.hex === i.tokenId._hex
+            );
+            console.log(exists);
+            if (exists === false) return;
             // get uri url from nft contract
             const totalPrice = await marketplace.getTotalPrice(i.itemId);
             const isSold = await marketplace.isItemSold(i.itemId);
@@ -389,6 +362,7 @@ export default function MyListedItems({
         );
 
         const uniquePurchases = purchases.filter((item, index, self) => {
+          if (item === undefined) return false;
           return (
             index ===
             self.findIndex((otherItem) => {
@@ -601,66 +575,64 @@ export default function MyListedItems({
     //   )}
     //   {renderSoldItems(soldItems)}
     // </div>
-    <div className= "dashboard-main-container">
+    <div className="dashboard-main-container">
       <div className="dashboard-container">
-      <header className="dashboard-brand">
-        <h2 >Listed Property</h2>
-      </header>
-    
-      {listedItems.length > 0 ? (
-        
+        <header className="dashboard-brand">
+          <h2>Listed Property</h2>
+        </header>
 
+        {listedItems.length > 0 ? (
           <table className="table">
-          <thead>
-          <tr>
-            <div className="row-head">
-            <div className="row-head-col">Document</div>
-            <div className="row-head-col">Status</div>
-            <div className="row-head-col">Action</div>
-            
-            
-            </div>
-            
-          </tr>
-        </thead>
+            <thead>
+              <tr>
+                <div className="row-head">
+                  <div className="row-head-col">Document</div>
+                  <div className="row-head-col">Status</div>
+                  <div className="row-head-col">Action</div>
+                </div>
+              </tr>
+            </thead>
             <tbody>
               <div className="table-body">
-
-
-              {listedItems.map((property) => (
-                <div key={property._id}>
-                  <div className="row">
-
-              
-                    <div className="row-body-col"><a
+                {listedItems.map((property) => (
+                  <div key={property._id}>
+                    <div className="row">
+                      <div className="row-body-col">
+                        <a
                           href={`https://${property.document}`}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
                           {property._id}
-                        </a></div>
-                    <div className="row-body-col">{property.isApproved ? <span className="greenn">Approved</span>  : <span className="redd">Not Approved</span>}</div>
-                    <div className="row-body-col">
-                    {property.isApproved ? (
-                      !property.isListed ? (
-                        <>
-                          <button className="buttons"
-                            
-                            onClick={() => listProperty(property)}
-                          >
-                            list property
-                          </button>
-                        </>
-                      ) : (
-                        <div>property listed</div>
-                      )
-                    ) : (
-                      <div>waiting for approval</div>
-                    )}
-                    </div>
-
+                        </a>
                       </div>
-                  {/* <td>
+                      <div className="row-body-col">
+                        {property.isApproved ? (
+                          <span className="greenn">Approved</span>
+                        ) : (
+                          <span className="redd">Not Approved</span>
+                        )}
+                      </div>
+                      <div className="row-body-col">
+                        {property.isApproved ? (
+                          !property.isListed ? (
+                            <>
+                              <button
+                                className="buttons"
+                                onClick={() => listProperty(property)}
+                              >
+                                list property
+                              </button>
+                            </>
+                          ) : (
+                            <div>property listed</div>
+                          )
+                        ) : (
+                          <div>waiting for approval</div>
+                        )}
+                      </div>
+                    </div>
+                    {/* <td>
                     <a
                       href={`https://${property.document}`}
                       target="_blank"
@@ -688,18 +660,17 @@ export default function MyListedItems({
                       <div>waiting for approval</div>
                     )}
                   </td> */}
-                </div>
-              ))}
+                  </div>
+                ))}
               </div>
             </tbody>
           </table>
-        
-      ) : (
-        <main style={{ padding: "1rem 0" }}>
-          {/* <h5>No listed assets</h5> */}
-        </main>
-      )}
-    </div>
+        ) : (
+          <main style={{ padding: "1rem 0" }}>
+            {/* <h5>No listed assets</h5> */}
+          </main>
+        )}
+      </div>
       {renderPurchases(
         purchases,
         resell,

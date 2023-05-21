@@ -24,14 +24,12 @@ const useStyles = makeStyles({
   card: {
     width: "50vw",
     boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)",
-    overflow: "scroll"
-
+    overflow: "scroll",
   },
   cardHeader: {
     backgroundColor: "#f2f2f2",
     fontWeight: "bold",
     textTransform: "uppercase",
-    
   },
   cardContent: {
     padding: 20,
@@ -186,23 +184,30 @@ export default function Profile({ account, user, setUser, setAccount }) {
     //   </Card>
     // </div>
     <div className="profile-main-container">
-
-
-    <div className="profile_container"> 
-    <Avatar className="profile_avatar" src={user.img} />
-    <label htmlFor="username">Username</label>
-    <div id="username"className="profile_brand">{user.name}</div>
-    <label htmlFor="email">Email</label>
-    <div id="email"className="profile_brand">{user.email}</div>
-    <label htmlFor="admin">Admin</label>
-    {user.isAdmin ? (<div id="admin"className="profil_admin_true"></div>) : (<div id="admin"className="profil_admin_false"></div>)}
-    <label htmlFor="account">Wallet Account Number:</label>
-    <div id="account"className="profile_brand">{account}</div>
-    <div className="profile_account_info" >Balance:<span>{balance}</span></div>
-    
-    
+      <div className="profile_container">
+        <Avatar className="profile_avatar" src={user.img} />
+        <label htmlFor="username">Username</label>
+        <div id="username" className="profile_brand">
+          {user.name}
+        </div>
+        <label htmlFor="email">Email</label>
+        <div id="email" className="profile_brand">
+          {user.email}
+        </div>
+        <label htmlFor="admin">Admin</label>
+        {user.isAdmin ? (
+          <div id="admin" className="profil_admin_true"></div>
+        ) : (
+          <div id="admin" className="profil_admin_false"></div>
+        )}
+        <label htmlFor="account">Wallet Account Number:</label>
+        <div id="account" className="profile_brand">
+          {account}
+        </div>
+        <div className="profile_account_info">
+          Balance: <span>{balance} ETH</span>
+        </div>
+      </div>
     </div>
-    </div>
-
   );
 }

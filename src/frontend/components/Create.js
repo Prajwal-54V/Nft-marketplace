@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Row, Form, Button } from "react-bootstrap";
 import LoginBtn from "./LoginBtn";
@@ -6,7 +5,7 @@ import axios from "axios";
 import { useAlert } from "react-alert";
 import { useNavigate } from "react-router-dom";
 import { client, subdomain } from "../../constants/IPFS";
-import  "../components/styles.css";
+import "../components/styles.css";
 
 const Create = ({ marketplace, nft, loggedIn, setLoginBtn, account, user }) => {
   const [imageName, setImageName] = useState(null);
@@ -18,13 +17,11 @@ const Create = ({ marketplace, nft, loggedIn, setLoginBtn, account, user }) => {
   const [price, setPrice] = useState("");
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
-  const [taxReciptName,setTaxReciptName]= useState(null);
-  const [taxRecipt,setTaxRecipt]= useState("");
- 
-  
+  const [taxReciptName, setTaxReciptName] = useState(null);
+  const [taxRecipt, setTaxRecipt] = useState("");
+
   const alert = useAlert();
   const navigate = useNavigate();
-  
 
   //
   const uploadToIPFS = async (event, type) => {
@@ -33,17 +30,15 @@ const Create = ({ marketplace, nft, loggedIn, setLoginBtn, account, user }) => {
     if (typeof file !== "undefined") {
       try {
         const result = await client.add(file);
+        console.log(result);
 
         if (type === "doc") {
           setDocumentName(event.target.files[0].name);
           setDocument(`${subdomain}/ipfs/${result.path}`);
-          
-        }
-        else if(type === "tax"){
+        } else if (type === "tax") {
           setTaxReciptName(event.target.files[0].name);
           setTaxRecipt(`${subdomain}/ipfs/${result.path}`);
-        } 
-        else if(type === "khata"){
+        } else if (type === "khata") {
           setkhataName(event.target.files[0].name);
           setkhata(`${subdomain}/ipfs/${result.path}`);
         } else if (type === "img") {
@@ -57,18 +52,21 @@ const Create = ({ marketplace, nft, loggedIn, setLoginBtn, account, user }) => {
   };
 
   const requestForPropertyApproval = async (event) => {
-    event.preventDefault()
-    if (!image || !price || !location || !description || !document|| !khataCertificate || !taxRecipt) return;
+    event.preventDefault();
+    if (
+      !image ||
+      !price ||
+      !location ||
+      !description ||
+      !document ||
+      !khataCertificate ||
+      !taxRecipt
+    ) {
+      alert.info("please upload all documents before submite!.");
+      return;
+    }
 
     try {
-      console.log(image,
-        document,
-        khataCertificate,
-        taxRecipt,
-        price,
-        location,
-        description,
-        user,)
       const response = await axios.post(
         "http://localhost:4000/reqForApproveProperty",
         {
@@ -133,8 +131,7 @@ const Create = ({ marketplace, nft, loggedIn, setLoginBtn, account, user }) => {
     //               onChange={(e) => uploadToIPFS(e, "khata")}
     //             />
     //           </Form.Group>
-              
-             
+
     //           <Form.Group controlId="propertyImage" className="d-flex">
     //             <Form.Label style={{ width: "150px" }}>Image:</Form.Label>
     //             <Form.Control
@@ -181,87 +178,114 @@ const Create = ({ marketplace, nft, loggedIn, setLoginBtn, account, user }) => {
     //   </div>
     // </div>
     <>
-    <div className="auth-container">
-
-      <div className="form-container">
-        <form onSubmit={(event)=>{requestForPropertyApproval(event)}}>
-          <div className="brand">
-            {/* <img src="" alt="" /> */}
-            <h1>Upload</h1>
-          </div>
-          <label className="file-label"  htmlFor="doc">Choose Property Document
-            <input className="custom-file-input" id="doc" type="file" onChange={(e) => uploadToIPFS(e, "doc")}/> 
-            {documentName && <p>Selected file: {documentName}</p>}
+      <div className="auth-container">
+        <div className="form-container">
+          <form
+            onSubmit={(event) => {
+              requestForPropertyApproval(event);
+            }}
+          >
+            <div className="brand">
+              {/* <img src="" alt="" /> */}
+              <h1>Upload</h1>
+            </div>
+            <label className="file-label" htmlFor="doc">
+              Choose Property Document
+              <input
+                className="custom-file-input"
+                id="doc"
+                type="file"
+                onChange={(e) => uploadToIPFS(e, "doc")}
+              />
+              {documentName && <p>Selected file: {documentName}</p>}
             </label>
 
-          {/* <input
+            {/* <input
             type="file"
             value={document}
             onChange={(e) => uploadToIPFS(e, "doc")}
           /> */}
-           <label className="file-label"  htmlFor="tax">Choose Tax Document
-            <input className="custom-file-input" id="tax" type="file" onChange={(e) => uploadToIPFS(e, "tax")}/> 
-            {taxReciptName && <p>Selected file: {taxReciptName}</p>}
+            <label className="file-label" htmlFor="tax">
+              Choose Tax Document
+              <input
+                className="custom-file-input"
+                id="tax"
+                type="file"
+                onChange={(e) => uploadToIPFS(e, "tax")}
+              />
+              {taxReciptName && <p>Selected file: {taxReciptName}</p>}
             </label>
 
-          {/* <input
+            {/* <input
             type="file"
             value={taxRecipt}
             onChange={(e) => uploadToIPFS(e, "tax")}
 
           /> */}
-           <label className="file-label"  htmlFor="khata">Choose Khata Document
-            <input className="custom-file-input" id="khata" type="file" onChange={(e) => uploadToIPFS(e, "khata")}/> 
-            {khataCertificateName && <p>Selected file: {khataCertificateName}</p>}
+            <label className="file-label" htmlFor="khata">
+              Choose Khata Document
+              <input
+                className="custom-file-input"
+                id="khata"
+                type="file"
+                onChange={(e) => uploadToIPFS(e, "khata")}
+              />
+              {khataCertificateName && (
+                <p>Selected file: {khataCertificateName}</p>
+              )}
             </label>
-          {/* <input
+            {/* <input
             type="file"
             value={khataCertificate}
             onChange={(e) => uploadToIPFS(e, "khata")}
 
           /> */}
-          <label className="file-label"  htmlFor="img">Choose Image File
-            <input className="custom-file-input" id="img" type="file" onChange={(e) => uploadToIPFS(e, "img")}/> 
-            {imageName && <p>Selected file: {imageName}</p>}
+            <label className="file-label" htmlFor="img">
+              Choose Image File
+              <input
+                className="custom-file-input"
+                id="img"
+                type="file"
+                onChange={(e) => uploadToIPFS(e, "img")}
+              />
+              {imageName && <p>Selected file: {imageName}</p>}
             </label>
-          {/* <input
+            {/* <input
             type="file"
             value={image}
             onChange={(e) => uploadToIPFS(e, "img")}
 
           /> */}
-          <input
-            type="text"
-            placeholder="Location"
-            name="location"
-            value={location}
-            min="3"
-            required
-            onChange={(e) => setLocation(e.target.value)}
-          />
-          <input
-            type="textarea"
-            placeholder="Description"
-            name="description"
-            value={description}
-            required
-            onChange={(e) => setDescription(e.target.value)}
-          />
-          <input
-            type="number"
-            placeholder="Price In ETH"
-            name="price"
-            value={price}
-            required
-            onChange={(e) => setPrice(e.target.value)}
-          />
+            <input
+              type="text"
+              placeholder="Location"
+              name="location"
+              value={location}
+              min="3"
+              required
+              onChange={(e) => setLocation(e.target.value)}
+            />
+            <input
+              type="textarea"
+              placeholder="Description"
+              name="description"
+              value={description}
+              required
+              onChange={(e) => setDescription(e.target.value)}
+            />
+            <input
+              type="number"
+              placeholder="Price In ETH"
+              name="price"
+              value={price}
+              required
+              onChange={(e) => setPrice(e.target.value)}
+            />
 
-          <button type="submit">Upload</button>
-          
-        </form>
-      
+            <button type="submit">Upload</button>
+          </form>
+        </div>
       </div>
-    </div>
       {/* <ToastContainer theme="colored" closeOnClick={true} /> */}
     </>
   );
