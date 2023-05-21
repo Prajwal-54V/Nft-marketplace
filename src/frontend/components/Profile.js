@@ -2,15 +2,7 @@ import React from "react";
 import { ethers } from "ethers";
 import { useState, useEffect } from "react";
 import { useAlert } from "react-alert";
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  Typography,
-  TextField,
-  Button,
-  Avatar,
-} from "@material-ui/core";
+import { Avatar } from "@material-ui/core";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -128,61 +120,6 @@ export default function Profile({ account, user, setUser, setAccount }) {
     updateBalance();
   }, []);
   return (
-    // <div className={classes.container}>
-    //   <Card className={classes.card}>
-    //     <CardHeader className={classes.cardHeader} title="Profile" />
-    //     <CardContent className={classes.cardContent}>
-    //       <Avatar className={classes.avatar} src={user.img} />
-    //       <Typography className={classes.name}>{user.name}</Typography>
-    //       <Typography className={classes.email}>{user.email}</Typography>
-    //       <Typography className={classes.admin}>Admin:</Typography>
-    //       <Typography>{user.isAdmin ? "True" : "False"}</Typography>
-    //       {isEditing ? (
-    //         <div className={classes.form}>
-    //           <TextField
-    //             className={classes.formControl}
-    //             label="Wallet Account Number"
-    //             value={walletAccountNumber}
-    //             onChange={handleChange}
-    //           />
-    //           <Button
-    //             className={classes.button}
-    //             variant="contained"
-    //             color="primary"
-    //             onClick={handleSave}
-    //           >
-    //             Save
-    //           </Button>
-    //           <Button
-    //             className={classes.button}
-    //             variant="contained"
-    //             color="secondary"
-    //             onClick={handleCancel}
-    //           >
-    //             Cancel
-    //           </Button>
-    //         </div>
-    //       ) : (
-    //         <div className={classes.wallet}>
-    //           <Typography className={classes.account}>
-    //             Wallet Account Number:
-    //           </Typography>
-    //           <Typography>{walletAccountNumber}</Typography>
-    //           <Button
-    //             className={classes.button}
-    //             variant="contained"
-    //             color="primary"
-    //             onClick={handleEdit}
-    //           >
-    //             Edit
-    //           </Button>
-    //         </div>
-    //       )}
-    //       <Typography className={classes.balance}>Wallet Balance:</Typography>
-    //       <Typography>{balance}</Typography>
-    //     </CardContent>
-    //   </Card>
-    // </div>
     <div className="profile-main-container">
       <div className="profile_container">
         <Avatar className="profile_avatar" src={user.img} />

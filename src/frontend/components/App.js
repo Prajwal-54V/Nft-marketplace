@@ -12,7 +12,7 @@ import NFTAbi from "../contractsData/NFT.json";
 import NFTAddress from "../contractsData/NFT-address.json";
 import { useState } from "react";
 import { ethers } from "ethers";
-import { Spinner } from "react-bootstrap";
+
 import DashBoard from "./DashBoard";
 import Profile from "./Profile";
 // import "./App.css";

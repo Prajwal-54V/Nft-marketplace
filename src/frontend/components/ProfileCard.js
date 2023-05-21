@@ -80,7 +80,7 @@ const ProfileCard = () => {
           >
             Profile
           </MenuItem>
-          {/* <MenuItem onClick={handleClose}>Account Details</MenuItem> */}
+
           <MenuItem
             onClick={(e) => {
               handleClose();
@@ -90,9 +90,6 @@ const ProfileCard = () => {
             Logout
           </MenuItem>
         </Box>
-        {/* <Box borderTop="1px solid #eee" py={1}>
-          <MenuItem onClick={handleClose}>Logout</MenuItem>
-        </Box> */}
       </Menu>
     </div>
   );

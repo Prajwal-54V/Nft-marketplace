@@ -9,32 +9,6 @@ import LoaderAnimation2 from "./LoaderAnimation2";
 
 function renderSoldItems(items) {
   return (
-    // <div className="flex justify-center">
-    //   {items.length > 0 ? (
-    //     <>
-    //       <h2>Sold</h2>
-    //       <div className="px-5 container">
-    //         <Row xs={1} md={2} lg={4} className="g-4 py-3">
-    //           {items.map((item, idx) => (
-    //             <Col key={idx} className="overflow-hidden">
-    //               <Card>
-    //                 <Card.Img variant="top" src={`https://${item.image}`} />
-    //                 <Card.Footer>
-    //                   For {ethers.utils.formatEther(item.totalPrice)} ETH -
-    //                   Recieved {ethers.utils.formatEther(item.price)} ETH
-    //                 </Card.Footer>
-    //               </Card>
-    //             </Col>
-    //           ))}
-    //         </Row>
-    //       </div>
-    //     </>
-    //   ) : (
-    //     <main style={{ padding: "1rem 0" }}>
-    //       {/* <h5>No sold properties</h5> */}
-    //     </main>
-    //   )}
-    // </div>
     <>
       {items.length > 0 && (
         <div className="card-container">
@@ -54,7 +28,7 @@ function renderSoldItems(items) {
                   <p className="card__description">{item.description}</p>
                   <div className="card__footer">
                     <span className="card__sold__description">
-                      For {ethers.utils.formatEther(item.totalPrice)} ETH -
+                      Sold For {ethers.utils.formatEther(item.totalPrice)} ETH -
                       Recieved {ethers.utils.formatEther(item.price)} ETH
                     </span>
                   </div>
@@ -75,86 +49,6 @@ function renderPurchases(
   resellProperty
 ) {
   return (
-    // <div className="flex justify-center">
-    //   {purchases.length > 0 ? (
-    //     <>
-    //       <h2>purchased</h2>
-    //       <div className="px-5 container">
-    //         <Row xs={1} md={2} lg={4} className="g-4 py-5">
-    //           {purchases.map((item, idx) => (
-    //             <Col key={idx} className="overflow-hidden">
-    //               <Card>
-    //                 <a
-    //                   href={`https://${item.document}`}
-    //                   target="_blank"
-    //                   rel="noreferrer"
-    //                 >
-    //                   <Card.Img variant="top" src={`https://${item.image}`} />
-    //                   {item.sold ? (
-    //                     <Card.Subtitle className="my-1">
-    //                       purchased for{" "}
-    //                       {ethers.utils.formatEther(item.totalPrice)} ETH
-    //                     </Card.Subtitle>
-    //                   ) : (
-    //                     <Card.Subtitle className="my-1">
-    //                       listed for {ethers.utils.formatEther(item.totalPrice)}{" "}
-    //                       ETH
-    //                     </Card.Subtitle>
-    //                   )}
-    //                 </a>
-    //                 {item.sold && (
-    //                   <Card.Footer className="d-flex flex-column justify-content-evenly">
-    //                     {resell === idx ? (
-    //                       <>
-    //                         <Row className="my-2">
-    //                           <Form.Control
-    //                             onChange={(e) => {
-    //                               setNewPrice(e.target.value);
-    //                             }}
-    //                             required
-    //                             type="number"
-    //                             placeholder="Price in ETH"
-    //                           />
-    //                         </Row>
-    //                         <div className="d-flex flex-row">
-    //                           <button
-    //                             className="btn btn-success w-50"
-    //                             onClick={() => {
-    //                               resellProperty(item);
-    //                             }}
-    //                           >
-    //                             Resell
-    //                           </button>
-    //                           <button
-    //                             className="btn btn-secondary w-50"
-    //                             onClick={() => toggleResell(-1)}
-    //                           >
-    //                             cancel
-    //                           </button>
-    //                         </div>
-    //                       </>
-    //                     ) : (
-    //                       <button
-    //                         className="btn btn-success"
-    //                         onClick={() => {
-    //                           toggleResell(idx);
-    //                         }}
-    //                       >
-    //                         Resell Property
-    //                       </button>
-    //                     )}
-    //                   </Card.Footer>
-    //                 )}
-    //               </Card>
-    //             </Col>
-    //           ))}
-    //         </Row>
-    //       </div>
-    //     </>
-    //   ) : (
-    //     <main style={{ padding: "1rem 0" }}>{/* <h5></h5> */}</main>
-    //   )}
-    // </div>
     <>
       {purchases.length > 0 && (
         <div className="card-container">
@@ -233,8 +127,6 @@ function renderPurchases(
                       </div>
                     </div>
                   )}
-
-                  {/* <button className="card__button">Buy</button> */}
                 </div>
               </div>
             ))}
@@ -513,68 +405,6 @@ export default function MyListedItems({
     );
 
   return (
-    // <div className="flex justify-center">
-    //   {listedItems.length > 0 ? (
-    //     <div className="px-5 py-3 container">
-    //       <h4>Listed Property</h4>
-    //       <table className="table">
-    //         <thead>
-    //           <tr>
-    //             <th>Document</th>
-    //             <th>Status</th>
-    //             <th>Action</th>
-    //           </tr>
-    //         </thead>
-    //         <tbody>
-    //           {listedItems.map((property) => (
-    //             <tr key={property._id}>
-    //               <td>
-    //                 <a
-    //                   href={`https://${property.document}`}
-    //                   target="_blank"
-    //                   rel="noopener noreferrer"
-    //                 >
-    //                   {property._id}
-    //                 </a>
-    //               </td>
-    //               <td>{property.isApproved ? "Approved" : "Not Approved"}</td>
-    //               <td>
-    //                 {property.isApproved ? (
-    //                   !property.isListed ? (
-    //                     <>
-    //                       <button
-    //                         className="btn btn-success mr-2"
-    //                         onClick={() => listProperty(property)}
-    //                       >
-    //                         list property
-    //                       </button>
-    //                     </>
-    //                   ) : (
-    //                     <div>property listed</div>
-    //                   )
-    //                 ) : (
-    //                   <div>waiting for approval</div>
-    //                 )}
-    //               </td>
-    //             </tr>
-    //           ))}
-    //         </tbody>
-    //       </table>
-    //     </div>
-    //   ) : (
-    //     <main style={{ padding: "1rem 0" }}>
-    //       {/* <h5>No listed assets</h5> */}
-    //     </main>
-    //   )}
-    //   {renderPurchases(
-    //     purchases,
-    //     resell,
-    //     toggleResell,
-    //     setNewPrice,
-    //     resellProperty
-    //   )}
-    //   {renderSoldItems(soldItems)}
-    // </div>
     <div className="dashboard-main-container">
       <div className="dashboard-container">
         <header className="dashboard-brand">
@@ -632,43 +462,13 @@ export default function MyListedItems({
                         )}
                       </div>
                     </div>
-                    {/* <td>
-                    <a
-                      href={`https://${property.document}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {property._id}
-                    </a>
-                  </td>
-                  <td>{property.isApproved ? "Approved" : "Not Approved"}</td>
-                  <td>
-                    {property.isApproved ? (
-                      !property.isListed ? (
-                        <>
-                          <button
-                            className="btn btn-success mr-2"
-                            onClick={() => listProperty(property)}
-                          >
-                            list property
-                          </button>
-                        </>
-                      ) : (
-                        <div>property listed</div>
-                      )
-                    ) : (
-                      <div>waiting for approval</div>
-                    )}
-                  </td> */}
                   </div>
                 ))}
               </div>
             </tbody>
           </table>
         ) : (
-          <main style={{ padding: "1rem 0" }}>
-            {/* <h5>No listed assets</h5> */}
-          </main>
+          <main style={{ padding: "1rem 0" }}></main>
         )}
       </div>
       {renderPurchases(

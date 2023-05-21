@@ -97,86 +97,6 @@ const Create = ({ marketplace, nft, loggedIn, setLoginBtn, account, user }) => {
 
   if (!loggedIn) return <LoginBtn setLoginBtn={setLoginBtn} />;
   return (
-    // <div className=" mt-5">
-    //   <div className="row">
-    //     <main
-    //       role="main"
-    //       className="col-lg-12 mx-auto"
-    //       style={{ maxWidth: "1000px" }}
-    //     >
-    //       <div className="content mx-auto " >
-    //         <Row className="g-4">
-    //         <div className="documents">
-    //           <Form.Group controlId="propertyDocument" className="d-flex">
-    //             <Form.Label style={{ width: "150px" }}>Property Document:</Form.Label>
-    //             <Form.Control
-    //               type="file"
-    //               className="docs"
-    //               onChange={(e) => uploadToIPFS(e, "doc")}
-    //             />
-    //           </Form.Group>
-    //           <Form.Group controlId="taxRecipt" className="d-flex">
-    //             <Form.Label style={{ width: "150px" }}>Tax Recipt:</Form.Label>
-    //             <Form.Control
-    //               type="file"
-    //               className="docs"
-    //               onChange={(e) => uploadToIPFS(e, "tax")}
-    //             />
-    //           </Form.Group>
-    //           <Form.Group controlId="khataCertificate" className="d-flex">
-    //             <Form.Label style={{ width: "150px" }}>Khata Certificate :</Form.Label>
-    //             <Form.Control
-    //               type="file"
-    //               className="docs"
-    //               onChange={(e) => uploadToIPFS(e, "khata")}
-    //             />
-    //           </Form.Group>
-
-    //           <Form.Group controlId="propertyImage" className="d-flex">
-    //             <Form.Label style={{ width: "150px" }}>Image:</Form.Label>
-    //             <Form.Control
-    //               type="file"
-    //               onChange={(e) => uploadToIPFS(e, "img")}
-    //               className="docs"
-    //             />
-    //           </Form.Group>
-    //           <Form.Control
-    //             onChange={(e) => setLocation(e.target.value)}
-    //             size="lg"
-    //             required
-    //             type="text"
-    //             placeholder="location"
-    //             className="docs"
-    //           />
-    //           <Form.Control
-    //             onChange={(e) => setDescription(e.target.value)}
-    //             size="lg"
-    //             required
-    //             as="textarea"
-    //             placeholder="Description"
-    //             className="docs"
-    //           />
-    //           <Form.Control
-    //             onChange={(e) => setPrice(e.target.value)}
-    //             size="lg"
-    //             required
-    //             type="number"
-    //             placeholder="Price in ETH"
-    //             className="docs"
-    //           />
-    //       </div>
-    //           <Button
-    //             onClick={requestForPropertyApproval}
-    //             variant="primary"
-    //             type="submit"
-    //           >
-    //             List Property
-    //           </Button>
-    //         </Row>
-    //       </div>
-    //     </main>
-    //   </div>
-    // </div>
     <>
       <div className="auth-container">
         <div className="form-container">
@@ -186,7 +106,6 @@ const Create = ({ marketplace, nft, loggedIn, setLoginBtn, account, user }) => {
             }}
           >
             <div className="brand">
-              {/* <img src="" alt="" /> */}
               <h1>Upload</h1>
             </div>
             <label className="file-label" htmlFor="doc">
@@ -200,11 +119,6 @@ const Create = ({ marketplace, nft, loggedIn, setLoginBtn, account, user }) => {
               {documentName && <p>Selected file: {documentName}</p>}
             </label>
 
-            {/* <input
-            type="file"
-            value={document}
-            onChange={(e) => uploadToIPFS(e, "doc")}
-          /> */}
             <label className="file-label" htmlFor="tax">
               Choose Tax Document
               <input
@@ -216,12 +130,6 @@ const Create = ({ marketplace, nft, loggedIn, setLoginBtn, account, user }) => {
               {taxReciptName && <p>Selected file: {taxReciptName}</p>}
             </label>
 
-            {/* <input
-            type="file"
-            value={taxRecipt}
-            onChange={(e) => uploadToIPFS(e, "tax")}
-
-          /> */}
             <label className="file-label" htmlFor="khata">
               Choose Khata Document
               <input
@@ -234,12 +142,7 @@ const Create = ({ marketplace, nft, loggedIn, setLoginBtn, account, user }) => {
                 <p>Selected file: {khataCertificateName}</p>
               )}
             </label>
-            {/* <input
-            type="file"
-            value={khataCertificate}
-            onChange={(e) => uploadToIPFS(e, "khata")}
 
-          /> */}
             <label className="file-label" htmlFor="img">
               Choose Image File
               <input
@@ -250,12 +153,7 @@ const Create = ({ marketplace, nft, loggedIn, setLoginBtn, account, user }) => {
               />
               {imageName && <p>Selected file: {imageName}</p>}
             </label>
-            {/* <input
-            type="file"
-            value={image}
-            onChange={(e) => uploadToIPFS(e, "img")}
 
-          /> */}
             <input
               type="text"
               placeholder="Location"
@@ -286,7 +184,6 @@ const Create = ({ marketplace, nft, loggedIn, setLoginBtn, account, user }) => {
           </form>
         </div>
       </div>
-      {/* <ToastContainer theme="colored" closeOnClick={true} /> */}
     </>
   );
 };
